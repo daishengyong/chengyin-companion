@@ -1,0 +1,80 @@
+name: Content Pack submission / 内容包提交
+description: Propose a strict-v2 declarative pack for the offline reviewed index / 申请进入离线社区审阅索引
+title: "[Pack] "
+labels: ["content-pack"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The reviewed index is not a store or endorsement. Submit only declarative, rights-documented Content Pack v2 media. Do not paste private paths, credentials, contracts, identity documents, or unreleased media into a public Issue.
+
+        社区审阅索引不是商店或官方背书。只提交权利证据完整的声明式 Content Pack v2；不要在公开 Issue 中粘贴私有路径、密钥、合同、身份证明或未公开媒体。
+
+  - type: input
+    id: pack_identity
+    attributes:
+      label: Pack ID and version / 内容包 ID 与版本
+      description: Must exactly match manifest.json / 必须与 manifest.json 完全一致
+      placeholder: cc.example.my-pack @ 1.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: manifest_sha256
+    attributes:
+      label: Manifest SHA-256
+      description: Output of shasum -a 256; review must bind this exact digest / 审阅必须绑定此准确摘要
+      placeholder: 64 lowercase hexadecimal characters
+    validations:
+      required: true
+
+  - type: textarea
+    id: user_value
+    attributes:
+      label: User value / 用户价值
+      description: Describe the moments and locales this pack improves, without marketing claims.
+    validations:
+      required: true
+
+  - type: textarea
+    id: rights_evidence
+    attributes:
+      label: Rights and provenance / 权利与来源
+      description: Reference privacy-safe evidence IDs from the manifest. Do not publish contracts or identity documents.
+    validations:
+      required: true
+
+  - type: textarea
+    id: audit_receipt
+    attributes:
+      label: Strict audit receipt / 严格审计回执
+      description: Paste the privacy-safe JSON from audit-content-pack.sh --strict --json; remove local paths if any external tool added them.
+      render: json
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contribution_contract
+    attributes:
+      label: Contribution contract / 贡献契约
+      options:
+        - label: Package and every asset declare source, author/provider, authorization basis, allowed uses and attribution. / 包级与逐资产来源、作者/提供者、授权依据、允许用途和署名均已声明。
+          required: true
+        - label: Every depicted person is a verified adult or an original fictional adult; no identifiable person is imitated without permission. / 人物均为已核验成年人或原创成年虚构角色，不擅自仿制可识别真人。
+          required: true
+        - label: Every asset has localized accessibility descriptions and the required alt text, transcript, captions and sound descriptions. / 每项素材均有逐语言无障碍说明及所需 alt、转录、字幕和声音描述。
+          required: true
+        - label: Every asset has a Starter fallback or an allowed skip strategy. / 每项素材均有 Starter 回退或允许的 skip 策略。
+          required: true
+        - label: The pack contains no executable, script, URL, credential, hidden payload or private path. / 内容包不含可执行文件、脚本、URL、凭证、隐藏载荷或私有路径。
+          required: true
+        - label: I understand READY_FOR_LAB and index inclusion are not final legal approval, official signing or public-release endorsement. / 我理解 READY_FOR_LAB 和进入索引不等于最终法律审核、官方签名或公开发行背书。
+          required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: Reproduction and validation / 复现与验证
+      description: List the exact validator, preview, audit and index-audit commands that passed.
+    validations:
+      required: true

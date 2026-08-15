@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "mediaRights": {
+    "status": "pending",
+    "evidenceRefs": []
+  },
+  "finalLicense": {
+    "status": "pending-owner-decision",
+    "evidenceRefs": [
+      "LICENSE",
+      "LICENSE-SCOPE.md",
+      "owner-choice:2026-08-15:MIT-code-only"
+    ]
+  },
+  "developerID": {
+    "status": "not-configured",
+    "evidenceRefs": []
+  },
+  "notarization": {
+    "status": "not-submitted",
+    "evidenceRefs": []
+  },
+  "ownerReleaseApproval": {
+    "status": "granted",
+    "evidenceRefs": [
+      "owner-command:2026-08-15:publish"
+    ]
+  }
+}

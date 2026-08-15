@@ -1,0 +1,60 @@
+name: Bug 报告
+description: 报告可重复出现的应用、互动或内容包问题
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。安全漏洞请按 SECURITY.md 私下报告。
+  - type: input
+    id: version
+    attributes:
+      label: 澄音版本
+      placeholder: 例如 0.18.0 (22)
+    validations:
+      required: true
+  - type: input
+    id: mac
+    attributes:
+      label: Mac 与 macOS
+      placeholder: 例如 Mac mini M4 / macOS 15.5
+    validations:
+      required: true
+  - type: input
+    id: error_code
+    attributes:
+      label: 错误码（如有）
+      description: 复制界面方括号中的代码，例如 PACK_VALIDATION_MANIFEST_INVALID_JSON；代码本身不含个人路径。
+      placeholder: PACK_… / BACKUP_… / COMPANION_UNEXPECTED_ERROR
+  - type: dropdown
+    id: mode
+    attributes:
+      label: 出现问题的形态
+      options:
+        - 头像
+        - 半身
+        - 全屏
+        - 设置或启动
+        - 内容包安装
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 重现步骤
+      description: 请写出从启动应用开始的具体操作。
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期与实际结果
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: 可选诊断
+      description: 请先移除令牌、用户名和个人路径，不要上传购买记录或密钥。

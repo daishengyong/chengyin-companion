@@ -1,0 +1,365 @@
+{
+  "schemaVersion": 2,
+  "id": "cc.chengyin.example.hello-workday",
+  "version": "0.2.0",
+  "minAppVersion": "0.19.50",
+  "tier": "local",
+  "character": "starter",
+  "locales": ["zh-Hans", "en-US"],
+  "assets": [
+    {
+      "id": "hello-workday.zh-hans",
+      "kind": "localization",
+      "path": "localization/zh-Hans.json",
+      "sha256": "4e2722d221953b081aee49205fe4561bb99f7b802cdb8f3fb385743d2ab37b33",
+      "durationMs": null,
+      "width": null,
+      "height": null,
+      "aspectRatio": null,
+      "hasNativeAudio": null,
+      "loop": null,
+      "cropAnchors": null,
+      "triggers": [],
+      "tags": ["example", "workday", "zh-Hans"],
+      "cooldownSeconds": null,
+      "weight": null
+    },
+    {
+      "id": "hello-workday.en-us",
+      "kind": "localization",
+      "path": "localization/en-US.json",
+      "sha256": "8efc55cfa31cbae817c955d9ba96d8897280ccdbaf4ca57ac6a8ccb634f1fe7b",
+      "durationMs": null,
+      "width": null,
+      "height": null,
+      "aspectRatio": null,
+      "hasNativeAudio": null,
+      "loop": null,
+      "cropAnchors": null,
+      "triggers": [],
+      "tags": ["example", "workday", "en-US"],
+      "cooldownSeconds": null,
+      "weight": null
+    },
+    {
+      "id": "shared-win-enter",
+      "kind": "video",
+      "path": "media/shared-win-enter.mov",
+      "sha256": "6429b62abfdd63d5dff0cd5f351e0c735d6e328383195a5df363cc008eb8547f",
+      "durationMs": 1500,
+      "width": 640,
+      "height": 360,
+      "aspectRatio": "16:9",
+      "hasNativeAudio": true,
+      "loop": false,
+      "cropAnchors": {
+        "pet": {"x": 0.5, "y": 0.5, "scale": 2.2},
+        "stage": {"x": 0.5, "y": 0.5, "scale": 1.1},
+        "fullscreen": {"x": 0.5, "y": 0.5, "scale": 1.0}
+      },
+      "triggers": [],
+      "tags": ["example", "workday", "shared-win", "enter", "ambient-tone"],
+      "cooldownSeconds": null,
+      "weight": null
+    },
+    {
+      "id": "shared-win-react",
+      "kind": "video",
+      "path": "media/shared-win-react.mov",
+      "sha256": "fdfd7c5231cb8a77414e5962d304cf62ebab3140c46c7f9955776633ca56c182",
+      "durationMs": 1750,
+      "width": 640,
+      "height": 360,
+      "aspectRatio": "16:9",
+      "hasNativeAudio": true,
+      "loop": false,
+      "cropAnchors": {
+        "pet": {"x": 0.5, "y": 0.5, "scale": 2.2},
+        "stage": {"x": 0.5, "y": 0.5, "scale": 1.1},
+        "fullscreen": {"x": 0.5, "y": 0.5, "scale": 1.0}
+      },
+      "triggers": [],
+      "tags": ["example", "workday", "shared-win", "react", "ambient-tone"],
+      "cooldownSeconds": null,
+      "weight": null
+    },
+    {
+      "id": "shared-win-exit",
+      "kind": "video",
+      "path": "media/shared-win-exit.mov",
+      "sha256": "0e63ef87354ddbec9d00ce143b7e5c9769b0a7992417b046748755211d0fd083",
+      "durationMs": 1500,
+      "width": 640,
+      "height": 360,
+      "aspectRatio": "16:9",
+      "hasNativeAudio": true,
+      "loop": false,
+      "cropAnchors": {
+        "pet": {"x": 0.5, "y": 0.5, "scale": 2.2},
+        "stage": {"x": 0.5, "y": 0.5, "scale": 1.1},
+        "fullscreen": {"x": 0.5, "y": 0.5, "scale": 1.0}
+      },
+      "triggers": [],
+      "tags": ["example", "workday", "shared-win", "exit", "ambient-tone"],
+      "cooldownSeconds": null,
+      "weight": null
+    }
+  ],
+  "license": "CC0-1.0",
+  "experiences": [
+    {
+      "id": "ritual.shared-win",
+      "kind": "ritual",
+      "triggers": ["taskCompleted"],
+      "steps": [
+        {
+          "assetID": "shared-win-enter",
+          "role": "enter",
+          "minimumPlaybackMs": 900,
+          "transition": "crossfade"
+        },
+        {
+          "assetID": "shared-win-react",
+          "role": "react",
+          "minimumPlaybackMs": 1100,
+          "transition": "cut"
+        },
+        {
+          "assetID": "shared-win-exit",
+          "role": "exit",
+          "minimumPlaybackMs": 900,
+          "transition": "crossfade"
+        }
+      ],
+      "locales": ["zh-Hans", "en-US"],
+      "cooldownSeconds": 900,
+      "weight": 1.0,
+      "returnPolicy": "previousMode"
+    }
+  ],
+  "contribution": {
+    "contractVersion": 2,
+    "package": {
+      "source": "Repository fixture authored for the Chengyin Content Pack v2 contract; abstract clips are generated locally by examples/packs/generate-hello-workday-media.sh.",
+      "author": "Chengyin Companion contributors",
+      "provider": null,
+      "origin": "original",
+      "license": "CC0-1.0",
+      "authorizationBasis": "owned",
+      "allowedUses": ["useInApp", "redistribution", "modification", "commercialUse"],
+      "attribution": {"required": false, "text": null},
+      "adultFictionStatus": "noPeople",
+      "evidenceID": "repo.fixture.hello-workday.package.v2",
+      "review": {
+        "status": "approved",
+        "version": 2,
+        "reviewerID": "repo.fixture-review"
+      }
+    },
+    "rights": [
+      {
+        "assetID": "hello-workday.zh-hans",
+        "origin": "original",
+        "holder": "Chengyin Companion contributors",
+        "license": "CC0-1.0",
+        "evidenceID": "repo.fixture.hello-workday.zh-hans.v2",
+        "sourceSHA256": null,
+        "commercialUseReviewed": true,
+        "subjectStatus": "notApplicable",
+        "source": "Repository fixture localization authored for contract tests.",
+        "author": "Chengyin Companion contributors",
+        "provider": null,
+        "authorizationBasis": "owned",
+        "allowedUses": ["useInApp", "redistribution", "modification", "commercialUse"],
+        "attribution": {"required": false, "text": null},
+        "review": {"status": "approved", "version": 2, "reviewerID": "repo.fixture-review"}
+      },
+      {
+        "assetID": "hello-workday.en-us",
+        "origin": "original",
+        "holder": "Chengyin Companion contributors",
+        "license": "CC0-1.0",
+        "evidenceID": "repo.fixture.hello-workday.en-us.v1",
+        "sourceSHA256": null,
+        "commercialUseReviewed": true,
+        "subjectStatus": "notApplicable",
+        "source": "Repository fixture localization authored for contract tests.",
+        "author": "Chengyin Companion contributors",
+        "provider": null,
+        "authorizationBasis": "owned",
+        "allowedUses": ["useInApp", "redistribution", "modification", "commercialUse"],
+        "attribution": {"required": false, "text": null},
+        "review": {"status": "approved", "version": 1, "reviewerID": "repo.fixture-review"}
+      },
+      {
+        "assetID": "shared-win-enter",
+        "origin": "original",
+        "holder": "Chengyin Companion contributors",
+        "license": "CC0-1.0",
+        "evidenceID": "repo.fixture.shared-win-enter.v1",
+        "sourceSHA256": null,
+        "commercialUseReviewed": true,
+        "subjectStatus": "noPerson",
+        "source": "Deterministic abstract gradient animation generated locally from the repository script.",
+        "author": "Chengyin Companion contributors",
+        "provider": "FFmpeg",
+        "authorizationBasis": "owned",
+        "allowedUses": ["useInApp", "redistribution", "modification", "commercialUse"],
+        "attribution": {"required": false, "text": null},
+        "review": {"status": "approved", "version": 1, "reviewerID": "repo.fixture-review"}
+      },
+      {
+        "assetID": "shared-win-react",
+        "origin": "original",
+        "holder": "Chengyin Companion contributors",
+        "license": "CC0-1.0",
+        "evidenceID": "repo.fixture.shared-win-react.v1",
+        "sourceSHA256": null,
+        "commercialUseReviewed": true,
+        "subjectStatus": "noPerson",
+        "source": "Deterministic abstract gradient animation generated locally from the repository script.",
+        "author": "Chengyin Companion contributors",
+        "provider": "FFmpeg",
+        "authorizationBasis": "owned",
+        "allowedUses": ["useInApp", "redistribution", "modification", "commercialUse"],
+        "attribution": {"required": false, "text": null},
+        "review": {"status": "approved", "version": 1, "reviewerID": "repo.fixture-review"}
+      },
+      {
+        "assetID": "shared-win-exit",
+        "origin": "original",
+        "holder": "Chengyin Companion contributors",
+        "license": "CC0-1.0",
+        "evidenceID": "repo.fixture.shared-win-exit.v1",
+        "sourceSHA256": null,
+        "commercialUseReviewed": true,
+        "subjectStatus": "noPerson",
+        "source": "Deterministic abstract gradient animation generated locally from the repository script.",
+        "author": "Chengyin Companion contributors",
+        "provider": "FFmpeg",
+        "authorizationBasis": "owned",
+        "allowedUses": ["useInApp", "redistribution", "modification", "commercialUse"],
+        "attribution": {"required": false, "text": null},
+        "review": {"status": "approved", "version": 1, "reviewerID": "repo.fixture-review"}
+      }
+    ],
+    "accessibility": [
+      {
+        "assetID": "hello-workday.zh-hans",
+        "descriptions": {
+          "zh-Hans": "共同完成仪式的简体中文本地化。",
+          "en-US": "Simplified Chinese localization for the shared-completion ritual."
+        },
+        "transcripts": null,
+        "altText": {},
+        "captions": {},
+        "soundDescriptions": {},
+        "flashingLights": false,
+        "suddenLoudAudio": false,
+        "review": {"status": "approved", "version": 2, "reviewerID": "repo.accessibility-review"}
+      },
+      {
+        "assetID": "hello-workday.en-us",
+        "descriptions": {
+          "zh-Hans": "共同完成仪式的美式英语本地化。",
+          "en-US": "US English localization for the shared-completion ritual."
+        },
+        "transcripts": null,
+        "altText": {},
+        "captions": {},
+        "soundDescriptions": {},
+        "flashingLights": false,
+        "suddenLoudAudio": false,
+        "review": {"status": "approved", "version": 1, "reviewerID": "repo.accessibility-review"}
+      },
+      {
+        "assetID": "shared-win-enter",
+        "descriptions": {
+          "zh-Hans": "无人物、无文字的青蓝色抽象进入动画，带有轻柔合成音。",
+          "en-US": "A person-free and text-free teal abstract entrance animation with a soft synthesized tone."
+        },
+        "transcripts": {
+          "zh-Hans": "[无对白；仅有轻柔的合成提示音。]",
+          "en-US": "[No speech; soft synthesized tone only.]"
+        },
+        "altText": {
+          "zh-Hans": "青蓝色光晕从深色背景中旋转进入。",
+          "en-US": "A teal glow rotates into view from a dark background."
+        },
+        "captions": {
+          "zh-Hans": "[轻柔的中音提示渐入]",
+          "en-US": "[A soft mid-tone fades in]"
+        },
+        "soundDescriptions": {
+          "zh-Hans": "平稳的合成音缓慢出现并淡出，没有突然的响声。",
+          "en-US": "A steady synthesized tone fades in and out without a sudden sound."
+        },
+        "flashingLights": false,
+        "suddenLoudAudio": false,
+        "review": {"status": "approved", "version": 1, "reviewerID": "repo.accessibility-review"}
+      },
+      {
+        "assetID": "shared-win-react",
+        "descriptions": {
+          "zh-Hans": "无人物、无文字的紫青色庆祝光效动画，带有轻柔高音提示。",
+          "en-US": "A person-free and text-free violet-and-cyan celebration animation with a soft high tone."
+        },
+        "transcripts": {
+          "zh-Hans": "[无对白；仅有轻柔的高音合成提示。]",
+          "en-US": "[No speech; soft high synthesized tone only.]"
+        },
+        "altText": {
+          "zh-Hans": "紫色光环在明亮青色背景上柔和脉动。",
+          "en-US": "A violet ring pulses gently over a bright cyan background."
+        },
+        "captions": {
+          "zh-Hans": "[轻柔的高音庆祝提示渐入并淡出]",
+          "en-US": "[A soft high celebration tone fades in and out]"
+        },
+        "soundDescriptions": {
+          "zh-Hans": "短促但平滑的高音合成提示，音量保持克制。",
+          "en-US": "A brief, smooth high synthesized tone at a restrained volume."
+        },
+        "flashingLights": false,
+        "suddenLoudAudio": false,
+        "review": {"status": "approved", "version": 1, "reviewerID": "repo.accessibility-review"}
+      },
+      {
+        "assetID": "shared-win-exit",
+        "descriptions": {
+          "zh-Hans": "无人物、无文字的青绿色抽象退场动画，带有轻柔低音提示。",
+          "en-US": "A person-free and text-free teal abstract exit animation with a soft low tone."
+        },
+        "transcripts": {
+          "zh-Hans": "[无对白；仅有轻柔的低音合成提示。]",
+          "en-US": "[No speech; soft low synthesized tone only.]"
+        },
+        "altText": {
+          "zh-Hans": "青绿色光线旋转并柔和淡入深色背景。",
+          "en-US": "Teal light rotates and settles softly into a dark background."
+        },
+        "captions": {
+          "zh-Hans": "[轻柔的低音提示逐渐淡出]",
+          "en-US": "[A soft low tone fades away]"
+        },
+        "soundDescriptions": {
+          "zh-Hans": "平稳的低音合成提示随画面一起柔和淡出。",
+          "en-US": "A steady low synthesized tone settles and fades with the image."
+        },
+        "flashingLights": false,
+        "suddenLoudAudio": false,
+        "review": {"status": "approved", "version": 1, "reviewerID": "repo.accessibility-review"}
+      }
+    ],
+    "fallback": {
+      "strategy": "starter",
+      "assets": [
+        {"assetID": "hello-workday.zh-hans", "strategy": "skip"},
+        {"assetID": "hello-workday.en-us", "strategy": "skip"},
+        {"assetID": "shared-win-enter", "strategy": "starter"},
+        {"assetID": "shared-win-react", "strategy": "starter"},
+        {"assetID": "shared-win-exit", "strategy": "starter"}
+      ]
+    }
+  }
+}

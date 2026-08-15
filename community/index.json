@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "indexID": "cc.chengyin.community.reviewed",
+  "version": "0.2.0",
+  "entries": [
+    {
+      "packID": "cc.chengyin.example.hello-workday",
+      "version": "0.2.0",
+      "packPath": "examples/packs/hello-workday",
+      "manifestSHA256": "cc401f9446743da75cb81391b7d005530fa7ac1114d398f0d4324f0457203dc3",
+      "review": {
+        "status": "approved",
+        "version": 2,
+        "reviewerID": "repo.fixture-review",
+        "reviewedManifestSHA256": "cc401f9446743da75cb81391b7d005530fa7ac1114d398f0d4324f0457203dc3"
+      }
+    }
+  ]
+}

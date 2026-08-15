@@ -1,0 +1,32 @@
+.DS_Store
+.build/
+.swiftpm/
+dist/
+DerivedData/
+*.xcuserstate
+*.xccheckout
+.agents/
+.ai-bridge/
+.codex/
+app-server-schema/
+video-production/
+
+# Local preview/release history is not the public repository. The two
+# machine-readable release-boundary files remain source-controlled.
+release/*
+!release/README.md
+!release/release-gates.json
+
+# Local credentials and generated commerce state
+.env
+.env.*
+!.env.example
+*.p8
+*.p12
+*.mobileprovision
+local-entitlements/
+
+# Locally generated media and temporary pack staging
+generated/
+pack-staging/
+*.chengyinpack.tmp

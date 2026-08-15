@@ -1,0 +1,352 @@
+{
+  "schemaVersion": 1,
+  "contractID": "cc.chengyin.module-stewardship",
+  "policyVersion": "1.2.0",
+  "identityMode": "role-only-until-canonical-github-organization",
+  "roles": [
+    {
+      "id": "maintainer",
+      "title": "Project maintainer",
+      "assignmentState": "project-owner-boundary",
+      "responsibilities": [
+        "Resolve cross-module compatibility and architecture decisions.",
+        "Keep the complete free and local-first experience intact."
+      ]
+    },
+    {
+      "id": "core-steward",
+      "title": "Core contract steward",
+      "assignmentState": "unassigned-until-canonical-github-organization",
+      "responsibilities": [
+        "Review stable contracts, persistence and migration behavior.",
+        "Keep policy independent from AppKit and media providers."
+      ]
+    },
+    {
+      "id": "app-steward",
+      "title": "Application runtime steward",
+      "assignmentState": "unassigned-until-canonical-github-organization",
+      "responsibilities": [
+        "Review presentation, interaction and local runtime integration.",
+        "Preserve graceful fallback and reduced-motion behavior."
+      ]
+    },
+    {
+      "id": "creator-tooling-steward",
+      "title": "Creator and contributor tooling steward",
+      "assignmentState": "unassigned-until-canonical-github-organization",
+      "responsibilities": [
+        "Review offline authoring, audit and contribution tooling.",
+        "Keep machine receipts stable, actionable and path-safe."
+      ]
+    },
+    {
+      "id": "content-rights-reviewer",
+      "title": "Content rights reviewer",
+      "assignmentState": "unassigned-until-canonical-github-organization",
+      "responsibilities": [
+        "Review source, authorization, attribution and release evidence.",
+        "Do not infer rights from file possession or checksums."
+      ]
+    },
+    {
+      "id": "accessibility-reviewer",
+      "title": "Accessibility reviewer",
+      "assignmentState": "unassigned-until-canonical-github-organization",
+      "responsibilities": [
+        "Review semantics, captions, transcripts and non-visual alternatives.",
+        "Preserve keyboard, VoiceOver and reduced-motion paths."
+      ]
+    },
+    {
+      "id": "privacy-security-reviewer",
+      "title": "Privacy and security reviewer",
+      "assignmentState": "unassigned-until-canonical-github-organization",
+      "responsibilities": [
+        "Review permissions, untrusted inputs and privacy-minimal receipts.",
+        "Keep network and executable extension boundaries explicit."
+      ]
+    },
+    {
+      "id": "release-owner",
+      "title": "Release owner",
+      "assignmentState": "project-owner-boundary",
+      "responsibilities": [
+        "Own final license, signing, notarization and publication decisions.",
+        "Keep preview evidence distinct from public release approval."
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "accessibility-localization",
+      "title": "Accessibility and localization contract",
+      "command": "python3 scripts/audit-accessibility-localization.py --json",
+      "recoveryAction": "Repair the reported semantic or locale contract and rerun the check."
+    },
+    {
+      "id": "app-build",
+      "title": "Release application build",
+      "command": "swift build -c release --disable-sandbox",
+      "recoveryAction": "Repair the first compiler failure and rebuild the release application."
+    },
+    {
+      "id": "app-server-adapter",
+      "title": "Privacy-safe App Server turn projection",
+      "command": "./scripts/run-codex-app-server-adapter-smoke.sh",
+      "recoveryAction": "Restore privacy deletion and truthful turn-state mapping, then rerun the adapter smoke."
+    },
+    {
+      "id": "event-spool-security",
+      "title": "Bounded no-follow local event inbox",
+      "command": "./scripts/run-event-spool-smoke.sh",
+      "recoveryAction": "Restore descriptor-based validation, bounded retention and path-free live health, then rerun the event spool smoke."
+    },
+    {
+      "id": "community-index",
+      "title": "Reviewed community index",
+      "command": "python3 scripts/audit-community-pack-index.py community/index.json --json",
+      "recoveryAction": "Repair the reviewed manifest binding and rerun the offline index audit."
+    },
+    {
+      "id": "content-pack-contract",
+      "title": "Content Pack v2 contract matrix",
+      "command": "./scripts/run-content-pack-v2-contract-matrix.sh",
+      "recoveryAction": "Repair the first Content Pack v2 contract failure and rerun the matrix."
+    },
+    {
+      "id": "contract-checks",
+      "title": "Core contract checks",
+      "command": "swift run --disable-sandbox CompanionContractChecks",
+      "recoveryAction": "Repair the first stable contract failure and rerun CompanionContractChecks."
+    },
+    {
+      "id": "core-boundaries",
+      "title": "Core module boundary guard",
+      "command": "python3 scripts/audit-core-module-boundaries.py --json",
+      "recoveryAction": "Restore the documented module boundary or ratchet the reviewed baseline."
+    },
+    {
+      "id": "localization-parity",
+      "title": "Base localization parity",
+      "command": "python3 scripts/check-localization-parity.py",
+      "recoveryAction": "Align the English and Simplified Chinese localization keys."
+    },
+    {
+      "id": "portable-source",
+      "title": "Portable clone, build and contribute contract",
+      "command": "./scripts/run-portable-source-smoke.sh",
+      "recoveryAction": "Repair the first isolated source-preview failure and rebuild the archive."
+    },
+    {
+      "id": "public-doc-parity",
+      "title": "Public bilingual document parity",
+      "command": "python3 scripts/check-public-doc-parity.py",
+      "recoveryAction": "Update both public-language documents and rerun parity validation."
+    },
+    {
+      "id": "release-readiness",
+      "title": "Public release owner gates",
+      "command": "./scripts/run-release-readiness-smoke.sh",
+      "recoveryAction": "Keep unresolved human release gates explicit; do not relabel a preview as public-ready."
+    },
+    {
+      "id": "starter-audit",
+      "title": "Built-in Starter media contract",
+      "command": "python3 scripts/audit-starter-media.py --json",
+      "recoveryAction": "Restore exact Starter inventory and complete factual rights review."
+    },
+    {
+      "id": "swiftpm-graph",
+      "title": "Swift package graph boundary",
+      "command": "python3 scripts/audit-swiftpm-package-graph.py --json",
+      "recoveryAction": "Restore the reviewed local-only package graph and rerun the audit."
+    },
+    {
+      "id": "untrusted-pack-security",
+      "title": "Untrusted content-pack security matrix",
+      "command": "./scripts/run-content-pack-smoke.sh",
+      "recoveryAction": "Repair the first unsafe content-pack acceptance or fallback regression."
+    }
+  ],
+  "modules": [
+    {
+      "id": "core-contracts",
+      "title": "Core contracts and policy",
+      "pathPrefixes": ["Sources/CompanionContracts", "Tests/CompanionContractsTests"],
+      "exactPaths": ["Package.swift"],
+      "reviewRoles": ["core-steward", "maintainer"],
+      "requiredChecks": ["contract-checks", "core-boundaries", "swiftpm-graph"],
+      "riskClasses": ["public-contract", "privacy-security", "runtime"],
+      "rfcPolicy": "required-for-public-contract-or-persistence",
+      "ownerGatePolicy": "none"
+    },
+    {
+      "id": "app-runtime",
+      "title": "Application runtime and presentation",
+      "pathPrefixes": ["Sources/CompanionApp"],
+      "exactPaths": [],
+      "reviewRoles": ["accessibility-reviewer", "app-steward"],
+      "requiredChecks": ["accessibility-localization", "app-build", "contract-checks", "core-boundaries"],
+      "riskClasses": ["accessibility", "privacy-security", "runtime"],
+      "rfcPolicy": "required-for-new-permission-or-trigger",
+      "ownerGatePolicy": "none"
+    },
+    {
+      "id": "starter-media",
+      "title": "Built-in Starter media and localization",
+      "pathPrefixes": ["Sources/CompanionApp/Resources"],
+      "exactPaths": [],
+      "reviewRoles": ["accessibility-reviewer", "content-rights-reviewer"],
+      "requiredChecks": ["accessibility-localization", "localization-parity", "starter-audit"],
+      "riskClasses": ["accessibility", "media-rights", "release"],
+      "rfcPolicy": "not-required",
+      "ownerGatePolicy": "required-for-public-media-release"
+    },
+    {
+      "id": "event-tool",
+      "title": "Local Codex event adapter and tool",
+      "pathPrefixes": ["Tools/CompanionEventEmitter"],
+      "exactPaths": [
+        "Schemas/codex-app-server-turn-events-v1.schema.json",
+        "Sources/CompanionContracts/CodexAppServerMapper.swift",
+        "Sources/CompanionApp/CompanionEventSpool.swift",
+        "Sources/CompanionApp/CompanionEventIngress.swift",
+        "Sources/CompanionApp/CompanionEventWatcher.swift",
+        "docs/CODEX-APP-SERVER-ADAPTER.md",
+        "docs/CODEX-APP-SERVER-ADAPTER.zh-Hans.md",
+        "docs/EVENT-SPOOL-SECURITY.md",
+        "docs/EVENT-SPOOL-SECURITY.zh-Hans.md",
+        "scripts/check-event-spool-integration.py",
+        "scripts/event-spool-smoke.swift",
+        "scripts/run-codex-app-server-adapter-smoke.sh",
+        "scripts/run-event-spool-smoke.sh"
+      ],
+      "reviewRoles": ["core-steward", "privacy-security-reviewer"],
+      "requiredChecks": ["app-build", "app-server-adapter", "contract-checks", "core-boundaries", "event-spool-security", "swiftpm-graph"],
+      "riskClasses": ["privacy-security", "runtime", "tooling"],
+      "rfcPolicy": "required-for-new-permission-or-trigger",
+      "ownerGatePolicy": "none"
+    },
+    {
+      "id": "creator-tooling",
+      "title": "Creator, audit and contributor tooling",
+      "pathPrefixes": ["scripts"],
+      "exactPaths": [],
+      "reviewRoles": ["creator-tooling-steward", "privacy-security-reviewer"],
+      "requiredChecks": ["content-pack-contract", "core-boundaries", "untrusted-pack-security"],
+      "riskClasses": ["privacy-security", "public-contract", "tooling"],
+      "rfcPolicy": "required-for-public-contract-or-persistence",
+      "ownerGatePolicy": "none"
+    },
+    {
+      "id": "schemas",
+      "title": "Machine-readable public schemas",
+      "pathPrefixes": ["Schemas"],
+      "exactPaths": [],
+      "reviewRoles": ["core-steward", "creator-tooling-steward", "privacy-security-reviewer"],
+      "requiredChecks": ["content-pack-contract", "contract-checks", "core-boundaries"],
+      "riskClasses": ["privacy-security", "public-contract"],
+      "rfcPolicy": "required-for-public-contract-or-persistence",
+      "ownerGatePolicy": "none"
+    },
+    {
+      "id": "community-content",
+      "title": "Reviewed community packs and examples",
+      "pathPrefixes": ["community", "examples"],
+      "exactPaths": [],
+      "reviewRoles": ["accessibility-reviewer", "content-rights-reviewer", "creator-tooling-steward"],
+      "requiredChecks": ["community-index", "content-pack-contract", "untrusted-pack-security"],
+      "riskClasses": ["accessibility", "media-rights", "privacy-security"],
+      "rfcPolicy": "not-required",
+      "ownerGatePolicy": "required-for-public-media-release"
+    },
+    {
+      "id": "developer-skill",
+      "title": "Codex installation and contributor skill",
+      "pathPrefixes": ["Skills"],
+      "exactPaths": [],
+      "reviewRoles": ["creator-tooling-steward", "privacy-security-reviewer"],
+      "requiredChecks": ["portable-source", "public-doc-parity"],
+      "riskClasses": ["documentation", "privacy-security", "tooling"],
+      "rfcPolicy": "required-for-new-permission-or-trigger",
+      "ownerGatePolicy": "none"
+    },
+    {
+      "id": "packaging",
+      "title": "Portable packaging and handoff",
+      "pathPrefixes": ["packaging"],
+      "exactPaths": [],
+      "reviewRoles": ["creator-tooling-steward", "privacy-security-reviewer"],
+      "requiredChecks": ["portable-source", "release-readiness"],
+      "riskClasses": ["packaging", "privacy-security", "release"],
+      "rfcPolicy": "required-for-policy-change",
+      "ownerGatePolicy": "required-for-final-license-signing-or-publication"
+    },
+    {
+      "id": "public-docs",
+      "title": "Contributor and product documentation",
+      "pathPrefixes": ["docs"],
+      "exactPaths": ["README.md", "README.en.md", "ROADMAP.md", "ROADMAP.zh-Hans.md", "SUPPORT.md", "SUPPORT.zh-Hans.md"],
+      "reviewRoles": ["creator-tooling-steward", "maintainer"],
+      "requiredChecks": ["public-doc-parity"],
+      "riskClasses": ["documentation"],
+      "rfcPolicy": "not-required",
+      "ownerGatePolicy": "none"
+    },
+    {
+      "id": "repository-governance",
+      "title": "Repository governance and contribution policy",
+      "pathPrefixes": [".github"],
+      "exactPaths": ["CODE_OF_CONDUCT.md", "CODE_OF_CONDUCT.zh-Hans.md", "CONTRIBUTING.md", "CONTRIBUTING.en.md", "GOVERNANCE.md", "GOVERNANCE.zh-Hans.md", "SECURITY.md", "SECURITY.en.md"],
+      "reviewRoles": ["maintainer", "privacy-security-reviewer"],
+      "requiredChecks": ["public-doc-parity", "release-readiness"],
+      "riskClasses": ["governance", "privacy-security"],
+      "rfcPolicy": "required-for-policy-change",
+      "ownerGatePolicy": "required-for-final-license-signing-or-publication"
+    },
+    {
+      "id": "release-evidence",
+      "title": "Preview and release evidence",
+      "pathPrefixes": ["release"],
+      "exactPaths": [],
+      "reviewRoles": ["release-owner"],
+      "requiredChecks": ["portable-source", "release-readiness"],
+      "riskClasses": ["media-rights", "packaging", "release"],
+      "rfcPolicy": "required-for-policy-change",
+      "ownerGatePolicy": "required-for-final-license-signing-or-publication"
+    },
+    {
+      "id": "root-configuration",
+      "title": "Repository root configuration",
+      "pathPrefixes": [],
+      "exactPaths": [".gitignore", "AGENTS.md", "Info.plist"],
+      "reviewRoles": ["maintainer", "privacy-security-reviewer"],
+      "requiredChecks": ["app-build", "portable-source", "release-readiness", "swiftpm-graph"],
+      "riskClasses": ["governance", "packaging", "runtime"],
+      "rfcPolicy": "required-for-policy-change",
+      "ownerGatePolicy": "required-for-final-license-signing-or-publication"
+    },
+    {
+      "id": "test-fixtures",
+      "title": "Cross-module test fixtures",
+      "pathPrefixes": ["Tests/Fixtures"],
+      "exactPaths": [],
+      "reviewRoles": ["creator-tooling-steward", "privacy-security-reviewer"],
+      "requiredChecks": ["content-pack-contract", "contract-checks", "untrusted-pack-security"],
+      "riskClasses": ["privacy-security", "tooling"],
+      "rfcPolicy": "not-required",
+      "ownerGatePolicy": "none"
+    }
+  ],
+  "forbiddenPathPrefixes": [
+    ".ai-bridge",
+    ".build",
+    ".codex",
+    ".git",
+    "app-server-schema",
+    "dist",
+    "scripts/__pycache__",
+    "video-production"
+  ]
+}

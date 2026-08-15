@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.local/schemas/product-boundary-receipt-v1.schema.json",
+  "title": "Chengyin local-first product boundary receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "contract",
+    "status",
+    "code",
+    "message",
+    "recoveryAction",
+    "scope",
+    "policy",
+    "runtimeFilesScanned",
+    "publicFilesScanned",
+    "forbiddenFindingCount",
+    "findingsTruncated",
+    "findings",
+    "historicalResearchState",
+    "networkRequired",
+    "environmentValuesRead",
+    "applicationsDirectoryModified",
+    "contentExcerptsIncluded",
+    "releaseState"
+  ],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "contract": {"const": "chengyin.product-boundary/v1"},
+    "status": {"enum": ["PASS", "FAIL"]},
+    "code": {
+      "anyOf": [
+        {"type": "null"},
+        {"enum": [
+          "PRODUCT_BOUNDARY_FORBIDDEN_RUNTIME",
+          "PRODUCT_BOUNDARY_INVALID_ARGUMENT",
+          "PRODUCT_BOUNDARY_PUBLIC_DOC_LEAK",
+          "PRODUCT_BOUNDARY_REQUIRED_PATH_MISSING",
+          "PRODUCT_BOUNDARY_RESOURCE_LIMIT",
+          "PRODUCT_BOUNDARY_UNEXPECTED_ERROR",
+          "PRODUCT_BOUNDARY_UNKNOWN_OPTION",
+          "PRODUCT_BOUNDARY_UNSAFE_PATH"
+        ]}
+      ]
+    },
+    "message": {"type": "string", "minLength": 1, "maxLength": 512},
+    "recoveryAction": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "string", "minLength": 1, "maxLength": 512}
+      ]
+    },
+    "scope": {"enum": ["development", "public"]},
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "monetization",
+        "forcedAccount",
+        "advertising",
+        "automaticSharing",
+        "manualLocalExport"
+      ],
+      "properties": {
+        "monetization": {"const": false},
+        "forcedAccount": {"const": false},
+        "advertising": {"const": false},
+        "automaticSharing": {"const": false},
+        "manualLocalExport": {"const": true}
+      }
+    },
+    "runtimeFilesScanned": {"type": "integer", "minimum": 0, "maximum": 4096},
+    "publicFilesScanned": {"type": "integer", "minimum": 0, "maximum": 4096},
+    "forbiddenFindingCount": {"type": "integer", "minimum": 0},
+    "findingsTruncated": {"type": "boolean"},
+    "findings": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["category", "kind", "relativePath", "line"],
+        "properties": {
+          "category": {
+            "enum": [
+              "advertising",
+              "automatic-sharing",
+              "forced-account",
+              "historical-research",
+              "monetization"
+            ]
+          },
+          "kind": {"type": "string", "pattern": "^[a-z0-9-]+$", "maxLength": 80},
+          "relativePath": {"type": "string", "minLength": 1, "maxLength": 240},
+          "line": {"type": "integer", "minimum": 1}
+        }
+      }
+    },
+    "historicalResearchState": {"enum": ["private-working-copy", "excluded", "leaked", "unknown"]},
+    "networkRequired": {"const": false},
+    "environmentValuesRead": {"const": false},
+    "applicationsDirectoryModified": {"const": false},
+    "contentExcerptsIncluded": {"const": false},
+    "releaseState": {"const": "NOT_PUBLIC_RELEASE_READY"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "PASS"}}},
+      "then": {
+        "properties": {
+          "code": {"const": null},
+          "recoveryAction": {"const": null},
+          "forbiddenFindingCount": {"const": 0},
+          "findingsTruncated": {"const": false},
+          "findings": {"maxItems": 0}
+        }
+      }
+    }
+  ]
+}

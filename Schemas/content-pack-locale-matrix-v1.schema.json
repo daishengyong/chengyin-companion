@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.local/schemas/content-pack-locale-matrix-v1.schema.json",
+  "title": "Chengyin Content Pack locale matrix receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "contract",
+    "status",
+    "packID",
+    "version",
+    "contributionMode",
+    "declaredLocales",
+    "rows",
+    "summary",
+    "networkRequired",
+    "mediaDecodePerformed",
+    "containsLocalizedCopy",
+    "releaseState"
+  ],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "contract": {"const": "chengyin.content-pack-locale-matrix/v1"},
+    "status": {"enum": ["PASS", "PASS_WITH_WARNINGS"]},
+    "packID": {"type": "string", "minLength": 3, "maxLength": 128},
+    "version": {"type": "string", "minLength": 1, "maxLength": 64},
+    "contributionMode": {"enum": ["legacy-v1", "compatibility-v2", "strict-v2"]},
+    "declaredLocales": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {"$ref": "#/$defs/locale"}
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {"$ref": "#/$defs/row"}
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestedLocaleCount",
+        "mediaEligibleLocaleCount",
+        "assetCount",
+        "accessibilityDeclaredAssetCount",
+        "experienceCount",
+        "warningCount"
+      ],
+      "properties": {
+        "requestedLocaleCount": {"type": "integer", "minimum": 1, "maximum": 32},
+        "mediaEligibleLocaleCount": {"type": "integer", "minimum": 0, "maximum": 32},
+        "assetCount": {"type": "integer", "minimum": 0, "maximum": 256},
+        "accessibilityDeclaredAssetCount": {"type": "integer", "minimum": 0, "maximum": 256},
+        "experienceCount": {"type": "integer", "minimum": 0, "maximum": 64},
+        "warningCount": {"type": "integer", "minimum": 0, "maximum": 32768}
+      }
+    },
+    "networkRequired": {"const": false},
+    "mediaDecodePerformed": {"const": false},
+    "containsLocalizedCopy": {"const": false},
+    "releaseState": {"const": "NOT_PUBLIC_RELEASE_READY"}
+  },
+  "$defs": {
+    "locale": {
+      "type": "string",
+      "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$",
+      "maxLength": 128
+    },
+    "optionalLocale": {
+      "anyOf": [
+        {"$ref": "#/$defs/locale"},
+        {"type": "null"}
+      ]
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "count"],
+      "properties": {
+        "code": {
+          "enum": [
+            "pack-media-unavailable",
+            "experience-media-unavailable",
+            "accessibility-declaration-missing",
+            "runtime-label-unavailable",
+            "runtime-speech-unavailable",
+            "accessibility-fallback-used"
+          ]
+        },
+        "count": {"type": "integer", "minimum": 1, "maximum": 256}
+      }
+    },
+    "assetResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetID", "kind", "accessibilityDeclared"],
+      "properties": {
+        "assetID": {"type": "string", "minLength": 1, "maxLength": 96},
+        "kind": {"enum": ["video", "audio", "image", "game", "localization"]},
+        "accessibilityDeclared": {"type": "boolean"},
+        "descriptionLocale": {"$ref": "#/$defs/optionalLocale"},
+        "transcriptLocale": {"$ref": "#/$defs/optionalLocale"},
+        "altTextLocale": {"$ref": "#/$defs/optionalLocale"},
+        "captionLocale": {"$ref": "#/$defs/optionalLocale"},
+        "soundDescriptionLocale": {"$ref": "#/$defs/optionalLocale"},
+        "runtimeLabelLocale": {"$ref": "#/$defs/optionalLocale"},
+        "runtimeSpeechLocale": {"$ref": "#/$defs/optionalLocale"}
+      }
+    },
+    "experienceResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["experienceID", "mediaEligible"],
+      "properties": {
+        "experienceID": {"type": "string", "minLength": 1, "maxLength": 96},
+        "mediaEligible": {"type": "boolean"},
+        "selectedMediaLocale": {"$ref": "#/$defs/optionalLocale"}
+      }
+    },
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requestedLocale",
+        "packMediaEligible",
+        "accessibilityFallbackUsed",
+        "assetResolutions",
+        "experienceResolutions",
+        "warnings"
+      ],
+      "properties": {
+        "requestedLocale": {"$ref": "#/$defs/locale"},
+        "packMediaEligible": {"type": "boolean"},
+        "selectedPackMediaLocale": {"$ref": "#/$defs/optionalLocale"},
+        "accessibilityFallbackUsed": {"type": "boolean"},
+        "assetResolutions": {
+          "type": "array",
+          "maxItems": 256,
+          "items": {"$ref": "#/$defs/assetResolution"}
+        },
+        "experienceResolutions": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {"$ref": "#/$defs/experienceResolution"}
+        },
+        "warnings": {
+          "type": "array",
+          "maxItems": 6,
+          "items": {"$ref": "#/$defs/warning"}
+        }
+      }
+    }
+  }
+}

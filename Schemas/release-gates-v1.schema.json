@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.local/schemas/release-gates-v1.schema.json",
+  "title": "Chengyin public release owner gates",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "mediaRights",
+    "finalLicense",
+    "developerID",
+    "notarization",
+    "ownerReleaseApproval"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "mediaRights": {
+      "$ref": "#/$defs/mediaRightsGate"
+    },
+    "finalLicense": {
+      "$ref": "#/$defs/licenseGate"
+    },
+    "developerID": {
+      "$ref": "#/$defs/developerIDGate"
+    },
+    "notarization": {
+      "$ref": "#/$defs/notarizationGate"
+    },
+    "ownerReleaseApproval": {
+      "$ref": "#/$defs/ownerGate"
+    }
+  },
+  "$defs": {
+    "evidenceRefs": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 160,
+        "pattern": "^[A-Za-z0-9._:/#-]+$"
+      }
+    },
+    "gateBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "evidenceRefs"],
+      "properties": {
+        "status": { "type": "string" },
+        "evidenceRefs": { "$ref": "#/$defs/evidenceRefs" }
+      }
+    },
+    "mediaRightsGate": {
+      "allOf": [
+        { "$ref": "#/$defs/gateBase" },
+        {
+          "properties": {
+            "status": { "enum": ["pending", "passed", "rejected"] }
+          }
+        }
+      ]
+    },
+    "licenseGate": {
+      "allOf": [
+        { "$ref": "#/$defs/gateBase" },
+        {
+          "properties": {
+            "status": {
+              "enum": ["pending-owner-decision", "approved", "rejected"]
+            }
+          }
+        }
+      ]
+    },
+    "developerIDGate": {
+      "allOf": [
+        { "$ref": "#/$defs/gateBase" },
+        {
+          "properties": {
+            "status": { "enum": ["not-configured", "configured", "revoked"] }
+          }
+        }
+      ]
+    },
+    "notarizationGate": {
+      "allOf": [
+        { "$ref": "#/$defs/gateBase" },
+        {
+          "properties": {
+            "status": { "enum": ["not-submitted", "accepted", "rejected"] }
+          }
+        }
+      ]
+    },
+    "ownerGate": {
+      "allOf": [
+        { "$ref": "#/$defs/gateBase" },
+        {
+          "properties": {
+            "status": { "enum": ["not-granted", "granted", "withdrawn"] }
+          }
+        }
+      ]
+    }
+  }
+}

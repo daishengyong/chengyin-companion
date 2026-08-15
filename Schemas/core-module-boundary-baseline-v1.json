@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "contract": "chengyin.core-module-boundary-baseline/v1",
+  "appVersion": "0.19.98",
+  "policy": "nonIncreasingUntilSplit",
+  "files": {
+    "CompanionViewModel.swift": {
+      "baselineLines": 3576,
+      "absoluteMaxLines": 5600
+    },
+    "ContentView.swift": {
+      "baselineLines": 1269,
+      "absoluteMaxLines": 3000
+    },
+    "CompanionSettingsView.swift": {
+      "baselineLines": 525,
+      "absoluteMaxLines": 900
+    },
+    "ContentPack.swift": {
+      "baselineLines": 311,
+      "absoluteMaxLines": 420
+    }
+  }
+}

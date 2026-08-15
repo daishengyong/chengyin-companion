@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.local/schemas/projection-authoring-receipt-v1.schema.json",
+  "title": "Chengyin projection authoring receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "packID",
+    "assetID",
+    "generatedForAppVersion",
+    "focalTracks",
+    "safeAreas"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "chengyin.projection-authoring-receipt/v1"
+    },
+    "packID": {"$ref": "#/$defs/identifier"},
+    "assetID": {"$ref": "#/$defs/identifier"},
+    "generatedForAppVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "focalTracks": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 3,
+      "propertyNames": {"enum": ["pet", "stage", "fullscreen"]},
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 32,
+        "items": {"$ref": "#/$defs/keyframe"}
+      }
+    },
+    "safeAreas": {
+      "type": "object",
+      "maxProperties": 3,
+      "propertyNames": {"enum": ["pet", "stage", "fullscreen"]},
+      "additionalProperties": {"$ref": "#/$defs/safeArea"}
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "keyframe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timeMs", "x", "y", "scale"],
+      "properties": {
+        "timeMs": {"type": "integer", "minimum": 0},
+        "x": {"type": "number", "minimum": 0, "maximum": 1},
+        "y": {"type": "number", "minimum": 0, "maximum": 1},
+        "scale": {"type": "number", "minimum": 1, "maximum": 8}
+      }
+    },
+    "safeArea": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "width", "height"],
+      "properties": {
+        "x": {"type": "number", "minimum": 0, "maximum": 1},
+        "y": {"type": "number", "minimum": 0, "maximum": 1},
+        "width": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "height": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+      }
+    }
+  }
+}

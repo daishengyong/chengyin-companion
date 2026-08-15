@@ -1,0 +1,23 @@
+timecode	chapter	host_action	screen_action	companion_action	primary_asset	on_screen_copy	recording_note
+00:00-00:10	冷开场	看向右下角后停顿	Codex 显示任务结束	小头像展开庆祝	companion-event-task_complete.mov	Codex 刚完成，她先开心了	真实任务完成事件，不用预览快捷键冒充
+00:10-00:35	冷开场	快速讲价值	四个功能蒙太奇	厨房、甩动、小游戏	kitchen/action-4/feed	有情绪的完成按钮	每镜头 2-4 秒
+00:35-01:20	问题	正面讲解	普通完成页和伴侣并排	安静呼吸	companion-master-landscape.mov	安静陪伴 / 即时奖励 / 可被改造	隐藏私人任务标题
+01:20-02:25	架构	指向五层图	逐层点亮 Codex/Seedance/TTS/SwiftUI/Event	小头像保持安静	local diagram	Codex 是导演，素材是演员	不要展示 API Key
+02:25-02:45	安装	打开下载目录	展示 ZIP、DMG、源码包	无	portable release	先玩起来，再继续改	文件名完整可读
+02:45-03:20	安装	双击安装器	安装终端输出三行结果	启动头像	Install command	不需要管理员权限	截掉用户名路径或使用演示账户
+03:20-03:45	诊断	双击诊断器	所有项目显示“通过”	安静呼吸	Diagnose command	应用 / 事件桥 / Codex 规则	保留完整诊断结果
+03:45-04:15	安装	解释 AGENTS	只展示 Chengyin 标记区块	无	AGENTS snippet	不会修改 config.toml	不要滚动到其他用户指令
+04:15-05:35	试玩	操作鼠标和快捷键	三形态、单击、双击、长按、甩动、游戏	多动作	active app assets	30 秒学会	保留原声音轨
+05:35-06:15	素材	展示角色合同	成年人/原创/身份锚点/禁止项	母片	master landscape	先锁角色，再批量生成	不要展示真人参考照片
+06:15-07:05	Seedance	解释母片路线	母片接九种动作九宫格	九动作	companion-action-0..8.mov	母片 → 含视频输入派生	价格仅录制当日复核后上屏
+07:05-07:35	声音	解释分工	原生音轨与 TTS 文件波形对比	飞吻+拖拽	video AAC + voice lines	关键表演原生音画，短反馈预生成	不开麦克风权限页
+07:35-08:05	代码	讲稳定命名	Models.swift 和资源目录并排	动作 0-8 快切	Models.swift	文件名就是素材接口	高亮 3-8 行
+08:05-08:45	智能体	复制主提示词	Codex 复述目标并列计划	头像安静	03-CODEX-MASTER-PROMPT.md	一次说清目标、边界、验证	可加速等待过程
+08:45-09:35	智能体	观察执行	Codex 盘点媒体、代码、系统	无	Codex UI	先审计，不盲改	遮挡本机私人路径
+09:35-10:15	智能体	解释停止门	Codex 在付费生成前停止确认	无	prompt cost gate	花钱前停，测试不污染正式事件	不要真的发起新 Seedance 调用
+10:15-11:20	改玩法	发番茄钟追加指令	Codex 改模型/调度/测试	专注→鼓掌	action-2	一次只改一个闭环	录制可剪成 3-5 倍速
+11:20-11:50	改玩法	试玩结果	计时器用短测试时长演示	展开鼓掌	action-2	输入 → 反馈 → 奖励 → 冷却 → 测试	节目演示用测试配置，产品默认 25 分钟
+11:50-12:55	踩坑	逐条讲解	三个错误卡片与正确路线	轻微表情	head curious	完成语义 / 母片 / 隔离安装	每条 20 秒内
+12:55-13:45	边界	严肃说明	隐私字段、权利清单、公证状态	安静待机	rights notice	本地优先，不夸大发行状态	价格与政策要录制日复核
+13:45-14:20	片尾	运行真实小任务	doctor/安装结束，真实完成事件	片尾庆祝	task complete	下载 → 完成任务 → 改一个玩法	只发送一次 live task.completed
+

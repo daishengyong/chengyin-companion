@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "pool_id": "REPLACE_WITH_YOUR_MINI_RESOURCE_PACKAGE_POOL_ID",
+  "model": "doubao-seedance-2-0-mini-260615",
+  "starting_remaining_package_tokens": 0,
+  "locally_tracked_remaining_package_tokens": 0,
+  "provider_console_reconciled": false,
+  "provider_console_reconciled_at": "REPLACE_WITH_CURRENT_ISO8601_TIME_WITH_TIMEZONE",
+  "provider_console_remaining_package_tokens": 0,
+  "provider_reconciliation": {
+    "method": "manual_provider_console_snapshot",
+    "package_instance_ids": [],
+    "purchased_package_tokens": 0,
+    "provider_mini_usage_records": 0,
+    "provider_mini_nonzero_payable_records": 0,
+    "local_succeeded_calls": 0,
+    "local_actual_package_deductions": 0,
+    "arithmetic_remaining": 0,
+    "account_arrears_balance": 0,
+    "evidence_note": "Fill from your own Volcengine console. Keep provider_console_reconciled=false until a human has verified every value."
+  },
+  "topups": [],
+  "expected_tokens_per_second": 40000,
+  "deduction_coefficients": {
+    "with_video_input_480p_720p": 1,
+    "without_video_input_480p_720p": 1.6429
+  },
+  "pay_as_you_go_spillover_allowed": false,
+  "calls": []
+}

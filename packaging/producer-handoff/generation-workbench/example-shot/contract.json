@@ -1,0 +1,18 @@
+{
+  "id": "PRODUCER-DEMO-CALIBRATION-01",
+  "model": "doubao-seedance-2-0-mini-260615",
+  "resolution": "480p",
+  "ratio": "16:9",
+  "duration_seconds": 4,
+  "generate_audio": true,
+  "watermark": false,
+  "return_last_frame": true,
+  "output_stem": "producer-demo-calibration-01",
+  "safety_identifier": "producer_demo_calibration_01",
+  "billing_guard": {
+    "batch_id": "PRODUCER-DEMO-B1",
+    "max_calls": 1,
+    "max_package_tokens": 400000
+  },
+  "prompt": "One continuous 16:9 cinematic desktop-companion micro-scene featuring a clearly adult original fictional character, age 25 or older, with a stable original identity and natural body proportions. She looks toward the viewer, smiles warmly, gives one energetic high-five gesture, and says exactly once in Mandarin: ‘准备好了，我们开始吧。’ Synchronize lips, expression, hand and voice. Clear dialogue, subtle room ambience, no second person, no cuts, no text, no subtitles, no logo, no watermark, no celebrity likeness, no real-person likeness, no explicit content."
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.example/schemas/content-pack-scaffold-receipt-v1.schema.json",
+  "title": "Chengyin content-pack scaffold receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "contract",
+    "status",
+    "code",
+    "message",
+    "recoveryAction",
+    "packID",
+    "characterID",
+    "locales",
+    "contributionMode",
+    "reviewState",
+    "rightsInferred",
+    "writesPerformed",
+    "destinationCreated",
+    "atomicPublish",
+    "networkRequired",
+    "providerCredentialsRequired",
+    "releaseState"
+  ],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "contract": {"const": "chengyin.content-pack-scaffold/v1"},
+    "status": {"enum": ["PASS", "FAIL"]},
+    "code": {"type": ["string", "null"], "pattern": "^CREATOR_SCAFFOLD_[A-Z0-9_]+$"},
+    "message": {"type": "string", "minLength": 1, "maxLength": 512},
+    "recoveryAction": {"type": ["string", "null"], "minLength": 1, "maxLength": 512},
+    "packID": {"type": ["string", "null"], "maxLength": 255},
+    "characterID": {"type": ["string", "null"], "maxLength": 96},
+    "locales": {
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"}
+    },
+    "contributionMode": {"const": "compatibility-v2"},
+    "reviewState": {"const": "pending-creator-evidence"},
+    "rightsInferred": {"const": false},
+    "writesPerformed": {"type": "boolean"},
+    "destinationCreated": {"type": "boolean"},
+    "atomicPublish": {"const": true},
+    "networkRequired": {"const": false},
+    "providerCredentialsRequired": {"const": false},
+    "releaseState": {"const": "NOT_PUBLIC_RELEASE_READY"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "PASS"}}},
+      "then": {
+        "properties": {
+          "code": {"const": null},
+          "recoveryAction": {"const": null},
+          "writesPerformed": {"const": true},
+          "destinationCreated": {"const": true}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "FAIL"}}},
+      "then": {
+        "properties": {
+          "code": {"type": "string"},
+          "recoveryAction": {"type": "string"},
+          "writesPerformed": {"const": false},
+          "destinationCreated": {"const": false}
+        }
+      }
+    }
+  ]
+}

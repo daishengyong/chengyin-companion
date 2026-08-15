@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.local/schemas/all-game-rewards-v1.schema.json",
+  "title": "Chengyin live all-game reward audit receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "contract",
+    "proofKind",
+    "status",
+    "code",
+    "message",
+    "recoveryAction",
+    "networkRequired",
+    "providerCredentialsRequired",
+    "applicationsDirectoryModified",
+    "runtimeIdentity",
+    "gameRewards",
+    "verifiedGameCount",
+    "releaseState"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "contract": { "const": "chengyin.all-game-rewards/v1" },
+    "proofKind": { "enum": ["LIVE_LOCAL_GUI", "NO_GUI_PROOF"] },
+    "status": { "enum": ["PASS", "PENDING", "FAIL"] },
+    "code": {
+      "type": ["string", "null"],
+      "pattern": "^UI_DIRECT_PLAY_[A-Z0-9_]+$"
+    },
+    "message": { "type": "string", "minLength": 1, "maxLength": 320 },
+    "recoveryAction": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 400
+    },
+    "networkRequired": { "const": false },
+    "providerCredentialsRequired": { "const": false },
+    "applicationsDirectoryModified": { "const": false },
+    "runtimeIdentity": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/runtimeIdentity" }
+      ]
+    },
+    "gameRewards": {
+      "type": "array",
+      "maxItems": 6,
+      "items": { "$ref": "#/$defs/gameReward" }
+    },
+    "verifiedGameCount": { "type": "integer", "minimum": 0, "maximum": 6 },
+    "releaseState": { "const": "NOT_PUBLIC_RELEASE_READY" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "status": { "const": "PASS" } },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "code": { "type": "null" },
+          "proofKind": { "const": "LIVE_LOCAL_GUI" },
+          "recoveryAction": { "type": "null" },
+          "runtimeIdentity": { "$ref": "#/$defs/currentRuntimeIdentity" },
+          "gameRewards": {
+            "minItems": 6,
+            "maxItems": 6,
+            "allOf": [
+              { "contains": { "properties": { "game": { "const": "catch" } }, "required": ["game"] }, "minContains": 1, "maxContains": 1 },
+              { "contains": { "properties": { "game": { "const": "hide" } }, "required": ["game"] }, "minContains": 1, "maxContains": 1 },
+              { "contains": { "properties": { "game": { "const": "combo" } }, "required": ["game"] }, "minContains": 1, "maxContains": 1 },
+              { "contains": { "properties": { "game": { "const": "heart" } }, "required": ["game"] }, "minContains": 1, "maxContains": 1 },
+              { "contains": { "properties": { "game": { "const": "rhythm" } }, "required": ["game"] }, "minContains": 1, "maxContains": 1 },
+              { "contains": { "properties": { "game": { "const": "feed" } }, "required": ["game"] }, "minContains": 1, "maxContains": 1 }
+            ]
+          },
+          "verifiedGameCount": { "const": 6 }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "status": { "const": "PENDING" } },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "code": { "const": "UI_DIRECT_PLAY_GUI_SESSION_LOCKED" },
+          "proofKind": { "const": "NO_GUI_PROOF" },
+          "recoveryAction": { "type": "string", "minLength": 1 },
+          "runtimeIdentity": { "$ref": "#/$defs/currentRuntimeIdentity" },
+          "gameRewards": { "maxItems": 0 },
+          "verifiedGameCount": { "const": 0 }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "status": { "const": "FAIL" } },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "code": { "type": "string", "pattern": "^UI_DIRECT_PLAY_[A-Z0-9_]+$" },
+          "proofKind": { "const": "LIVE_LOCAL_GUI" },
+          "recoveryAction": { "type": "string", "minLength": 1 },
+          "gameRewards": { "maxItems": 5 }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "runtimeIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "identity", "current", "processCount"],
+      "properties": {
+        "origin": { "enum": ["distPreview", "installed", "other", "multiple", "none", null] },
+        "identity": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\+[0-9]+\\.[0-9a-f]{12}$" }
+          ]
+        },
+        "current": { "type": "boolean" },
+        "processCount": { "type": "integer", "minimum": 0, "maximum": 16 }
+      }
+    },
+    "currentRuntimeIdentity": {
+      "allOf": [
+        { "$ref": "#/$defs/runtimeIdentity" },
+        {
+          "properties": {
+            "origin": { "enum": ["distPreview", "installed"] },
+            "identity": { "type": "string" },
+            "current": { "const": true },
+            "processCount": { "const": 1 }
+          }
+        }
+      ]
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "height": { "type": "integer", "minimum": 1, "maximum": 10000 }
+      }
+    },
+    "gameReward": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["game", "status", "expanded", "restored"],
+      "properties": {
+        "game": { "enum": ["catch", "hide", "combo", "heart", "rhythm", "feed"] },
+        "status": { "const": "PASS" },
+        "expanded": { "$ref": "#/$defs/dimensions" },
+        "restored": {
+          "allOf": [
+            { "$ref": "#/$defs/dimensions" },
+            {
+              "properties": {
+                "width": { "maximum": 160 },
+                "height": { "maximum": 200 }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

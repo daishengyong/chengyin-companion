@@ -1,0 +1,57 @@
+name: Core RFC
+description: Propose a public contract, persisted field, permission, trigger family or major interaction system
+title: "[RFC] "
+labels: ["rfc"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for changes that affect public compatibility or trust boundaries. Small fixes and content ideas do not need an RFC.
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem
+      description: Describe the user-visible problem and evidence that it belongs in Core.
+    validations:
+      required: true
+  - type: textarea
+    id: decision
+    attributes:
+      label: Proposed contract and behavior
+      description: Include trigger, state transitions, cancellation and completion boundaries.
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Data and permissions
+      description: List every persisted field, network/system permission and the explicit deletion path.
+    validations:
+      required: true
+  - type: textarea
+    id: fallback
+    attributes:
+      label: Offline, failure and recovery
+      description: Explain the built-in fallback, rollback and how trusted events remain reliable.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and migration
+      description: Explain old app/pack/state behavior, versioning and deprecation needs.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Deterministic verification
+      description: Name contract, smoke, recovery and real-window acceptance checks.
+    validations:
+      required: true

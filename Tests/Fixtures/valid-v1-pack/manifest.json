@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "cc.chengyin.fixture.valid-v1",
+  "version": "1.0.0",
+  "minAppVersion": "0.19.26",
+  "tier": "local",
+  "character": "fixture",
+  "locales": ["zh-Hans"],
+  "assets": [
+    {
+      "id": "valid-v1.zh-Hans",
+      "kind": "localization",
+      "path": "localization/zh-Hans.json",
+      "sha256": "ae84d46beb18695cc14c3be52840c48b71791b22c064b61565fb1fd3b19b8a55",
+      "durationMs": null,
+      "width": null,
+      "height": null,
+      "aspectRatio": null,
+      "hasNativeAudio": null,
+      "loop": null,
+      "cropAnchors": null,
+      "triggers": [],
+      "tags": ["fixture", "v1"],
+      "cooldownSeconds": null,
+      "weight": null
+    }
+  ],
+  "license": "LicenseRef-Fixture-V1"
+}

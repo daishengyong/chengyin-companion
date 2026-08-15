@@ -1,0 +1,10 @@
+{
+  "approvedFixtureMediaBundled": 3,
+  "contract": "chengyin.public-code-only/v1",
+  "licenseInferencePerformed": false,
+  "networkRequired": false,
+  "removedDeclaredAssetCount": 198,
+  "runtimeFallback": "animatedSystemSymbolsAndLocalContentPacks",
+  "schemaVersion": 1,
+  "starterMediaBundled": false
+}

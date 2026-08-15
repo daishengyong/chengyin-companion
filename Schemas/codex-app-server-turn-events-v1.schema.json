@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.example/schemas/codex-app-server-turn-events-v1.schema.json",
+  "title": "Chengyin privacy projection for Codex App Server turn events",
+  "description": "The accepted minimum input shape for one turn notification. This is not the complete upstream App Server schema. Unknown upstream fields are allowed and discarded by the mapper.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/turnStarted"
+    },
+    {
+      "$ref": "#/$defs/turnCompleted"
+    }
+  ],
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "baseTurn": {
+      "type": "object",
+      "required": [
+        "id",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "status": {
+          "type": "string"
+        },
+        "durationMs": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 2592000000
+        }
+      },
+      "additionalProperties": true
+    },
+    "params": {
+      "type": "object",
+      "required": [
+        "threadId",
+        "turn"
+      ],
+      "properties": {
+        "threadId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "turn": {
+          "$ref": "#/$defs/baseTurn"
+        }
+      },
+      "additionalProperties": true
+    },
+    "turnStarted": {
+      "type": "object",
+      "required": [
+        "method",
+        "params"
+      ],
+      "properties": {
+        "jsonrpc": {
+          "type": "string"
+        },
+        "method": {
+          "const": "turn/started"
+        },
+        "params": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/params"
+            },
+            {
+              "properties": {
+                "turn": {
+                  "properties": {
+                    "status": {
+                      "const": "inProgress"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "turnCompleted": {
+      "type": "object",
+      "required": [
+        "method",
+        "params"
+      ],
+      "properties": {
+        "jsonrpc": {
+          "type": "string"
+        },
+        "method": {
+          "const": "turn/completed"
+        },
+        "params": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/params"
+            },
+            {
+              "properties": {
+                "turn": {
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "completed",
+                        "failed",
+                        "interrupted"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

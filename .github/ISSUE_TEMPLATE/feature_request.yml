@@ -1,0 +1,42 @@
+name: 玩法或场景建议
+description: 提议新的互动、场景、内容包或恢复能力
+title: "[Idea] "
+labels: ["idea"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 想改善的体验
+      description: 先说明用户何时会需要它，以及现在为什么不够好。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案
+      description: 可以包含触发方式、动作、声音、反馈和结束状态。
+    validations:
+      required: true
+  - type: dropdown
+    id: contribution_lane
+    attributes:
+      label: 你认为它属于哪条贡献路径
+      options:
+        - 文档与本地化
+        - 声明式内容与 Starter 素材
+        - 反应、仪式、场景故事或小游戏规则
+        - 事件适配器
+        - Swift Core
+        - 不确定
+    validations:
+      required: true
+  - type: textarea
+    id: rights
+    attributes:
+      label: 若涉及参考素材
+      description: 请只提供拥有使用权的素材，并说明来源；不要提交可识别真人的仿制请求。
+  - type: textarea
+    id: data_boundary
+    attributes:
+      label: 数据、权限与降级
+      description: 说明是否新增持久化、网络或系统权限，以及离线/失败时如何安全退回。

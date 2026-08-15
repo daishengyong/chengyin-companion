@@ -1,0 +1,73 @@
+name: Chengyin public code CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-validate-code-only:
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify public code-only boundary
+        run: |
+          test -f LICENSE
+          test -f LICENSE-SCOPE.md
+          test -f PUBLIC-CODE-ONLY.md
+          test -f Sources/CompanionApp/Resources/public-code-only.json
+          test ! -e Sources/CompanionApp/Resources/starter-media.json
+          python3 -m json.tool Sources/CompanionApp/Resources/public-code-only.json >/dev/null
+          test -z "$(find Sources/CompanionApp/Resources -type f \
+            \( -name '*.mov' -o -name '*.mp4' -o -name '*.mp3' -o -name '*.wav' \
+              -o -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' -o -name '*.webp' \
+              -o -name '*.icns' \) -print -quit)"
+
+      - name: Verify approved CC0 fixture media
+        run: |
+          echo '6429b62abfdd63d5dff0cd5f351e0c735d6e328383195a5df363cc008eb8547f  examples/packs/hello-workday/media/shared-win-enter.mov' | shasum -a 256 -c -
+          echo 'fdfd7c5231cb8a77414e5962d304cf62ebab3140c46c7f9955776633ca56c182  examples/packs/hello-workday/media/shared-win-react.mov' | shasum -a 256 -c -
+          echo '0e63ef87354ddbec9d00ce143b7e5c9769b0a7992417b046748755211d0fd083  examples/packs/hello-workday/media/shared-win-exit.mov' | shasum -a 256 -c -
+          ./scripts/validate-content-pack.sh examples/packs/hello-workday --json
+
+      - name: Check public documentation and secrets
+        run: |
+          python3 scripts/check-public-doc-parity.py
+          PYTHONDONTWRITEBYTECODE=1 python3 scripts/audit-public-source-secrets.py --root . --json
+          PYTHONDONTWRITEBYTECODE=1 python3 scripts/audit-product-boundary.py --root . --scope development --json
+
+      - name: Validate script syntax
+        run: |
+          zsh -n scripts/build-app.sh
+          zsh -n scripts/preview-local.sh
+          zsh -n scripts/bootstrap-local.sh
+          python3 -c "compile(open('scripts/prepare-public-code-only.py', encoding='utf-8').read(), 'prepare-public-code-only.py', 'exec')"
+          python3 -c "compile(open('scripts/local-preview.py', encoding='utf-8').read(), 'local-preview.py', 'exec')"
+
+      - name: Build MIT source and run contracts
+        run: |
+          swift build -c release --disable-sandbox
+          swift run --disable-sandbox CompanionContractChecks
+
+      - name: Build ad-hoc local code-only app
+        run: |
+          ./scripts/build-app.sh
+          codesign --verify --deep --strict 'dist/Chengyin Companion.app'
+          test -f 'dist/Chengyin Companion.app/Contents/Resources/public-code-only.json'
+          test -z "$(find 'dist/Chengyin Companion.app/Contents/Resources' -type f \
+            \( -name '*.mov' -o -name '*.mp4' -o -name '*.mp3' -o -name '*.wav' \
+              -o -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' -o -name '*.webp' \
+              -o -name '*.icns' \) -print -quit)"
+
+      - name: Keep compiler-level boundaries executable
+        run: |
+          python3 scripts/audit-swift-compiler-boundaries.py --json
+          python3 scripts/audit-swiftpm-package-graph.py --json

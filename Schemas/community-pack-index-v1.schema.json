@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.example/schemas/community-pack-index-v1.schema.json",
+  "title": "Chengyin reviewed community pack index v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "indexID", "version", "entries"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "indexID": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)+$",
+      "maxLength": 128
+    },
+    "version": { "$ref": "#/$defs/semanticVersion" },
+    "entries": {
+      "type": "array",
+      "maxItems": 64,
+      "items": { "$ref": "#/$defs/entry" }
+    }
+  },
+  "$defs": {
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packID",
+        "version",
+        "packPath",
+        "manifestSHA256",
+        "review"
+      ],
+      "properties": {
+        "packID": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)+$",
+          "maxLength": 128
+        },
+        "version": { "$ref": "#/$defs/semanticVersion" },
+        "packPath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*(?:^|/)\\.).+$"
+        },
+        "manifestSHA256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "review": { "$ref": "#/$defs/review" }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "version",
+        "reviewerID",
+        "reviewedManifestSHA256"
+      ],
+      "properties": {
+        "status": { "enum": ["draft", "pending", "approved", "rejected"] },
+        "version": { "type": "integer", "minimum": 1 },
+        "reviewerID": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"
+        },
+        "reviewedManifestSHA256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

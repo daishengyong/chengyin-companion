@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.local/schemas/source-package-v1.schema.json",
+  "title": "Chengyin verifiable source-preview package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "artifactKind",
+    "product",
+    "archiveRoot",
+    "appVersion",
+    "appBuild",
+    "appSourceFingerprint",
+    "buildIdentity",
+    "sourcePackageFingerprint",
+    "sourcePackageIdentity",
+    "platform",
+    "completenessProfile",
+    "integrityScope",
+    "includedPaths",
+    "excludedPaths",
+    "checksumsFile",
+    "releaseGateRegistry",
+    "releaseGates"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "artifactKind": { "const": "source-preview" },
+    "product": { "const": "Chengyin Companion" },
+    "archiveRoot": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9._-]+-source$"
+    },
+    "appVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "appBuild": {
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "appSourceFingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "buildIdentity": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\+[0-9]+\\.[0-9a-f]{12}$"
+    },
+    "sourcePackageFingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sourcePackageIdentity": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\+[0-9]+\\.[0-9a-f]{12}\\.src\\.[0-9a-f]{12}$"
+    },
+    "platform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["os", "minimumVersion", "architectures"],
+      "properties": {
+        "os": { "const": "macOS" },
+        "minimumVersion": { "const": "14.0" },
+        "architectures": {
+          "type": "array",
+          "prefixItems": [{ "const": "arm64" }],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        }
+      }
+    },
+    "completenessProfile": { "const": "clone-build-contribute-v1" },
+    "integrityScope": { "const": "internal-consistency-not-authenticity" },
+    "includedPaths": {
+      "type": "array",
+      "minItems": 20,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120,
+        "pattern": "^[A-Za-z0-9._/-]+$"
+      }
+    },
+    "excludedPaths": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 120,
+        "pattern": "^[A-Za-z0-9._/-]+$"
+      }
+    },
+    "checksumsFile": { "const": "SOURCE-SHA256SUMS.txt" },
+    "releaseGateRegistry": { "const": "release/release-gates.json" },
+    "releaseGates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mediaRights",
+        "finalLicense",
+        "developerID",
+        "notarization",
+        "ownerReleaseApproval",
+        "publicRelease"
+      ],
+      "properties": {
+        "mediaRights": { "enum": ["pending", "passed", "rejected"] },
+        "finalLicense": {
+          "enum": ["pending-owner-decision", "approved", "rejected"]
+        },
+        "developerID": {
+          "enum": ["not-configured", "configured", "revoked"]
+        },
+        "notarization": {
+          "enum": ["not-submitted", "accepted", "rejected"]
+        },
+        "ownerReleaseApproval": {
+          "enum": ["not-granted", "granted", "withdrawn"]
+        },
+        "publicRelease": { "const": "not-ready" }
+      }
+    }
+  }
+}

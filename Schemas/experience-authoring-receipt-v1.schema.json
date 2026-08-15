@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.local/schemas/experience-authoring-receipt-v1.schema.json",
+  "title": "Chengyin experience authoring receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "status",
+    "code",
+    "message",
+    "recoveryAction"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "chengyin.experience-authoring-receipt/v1"},
+    "status": {"enum": ["PASS", "FAIL"]},
+    "code": {"type": ["string", "null"], "pattern": "^EXPERIENCE_AUTHOR_[A-Z0-9_]+$"},
+    "message": {"type": "string", "minLength": 1, "maxLength": 512},
+    "recoveryAction": {"type": "string", "minLength": 1, "maxLength": 512},
+    "packID": {"$ref": "#/$defs/identifier"},
+    "packVersion": {"type": "string", "minLength": 1, "maxLength": 128},
+    "experienceID": {"$ref": "#/$defs/identifier"},
+    "operation": {"enum": ["check", "create", "replace"]},
+    "writesPerformed": {"type": "boolean"},
+    "stepCount": {"type": "integer", "minimum": 1, "maximum": 8},
+    "triggerCount": {"type": "integer", "minimum": 1, "maximum": 16},
+    "localeCount": {"type": "integer", "minimum": 0, "maximum": 32},
+    "backupReference": {
+      "type": ["string", "null"],
+      "pattern": "^\\.[A-Za-z0-9._-]+\\.chengyin-experience-backups/manifest-[0-9]{8}-[0-9]{6}-[a-f0-9]{8}\\.json$"
+    },
+    "rolledBack": {"type": "boolean"}
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    }
+  }
+}

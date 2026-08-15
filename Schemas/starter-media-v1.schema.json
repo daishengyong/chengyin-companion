@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.local/schemas/starter-media-v1.schema.json",
+  "title": "Chengyin built-in Starter media contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "contract",
+    "packID",
+    "version",
+    "distributionClass",
+    "providerCredentialsRequiredAtBuild",
+    "license",
+    "licenseReview",
+    "rightsConclusion",
+    "accessibilityConclusion",
+    "publicDistributionReady",
+    "privacy",
+    "fallback",
+    "assets"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "contract": { "const": "chengyin.starter-media/v1" },
+    "packID": { "const": "cc.chengyin.builtin-starter" },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "distributionClass": {
+      "enum": ["internalPreview", "publicCandidate"]
+    },
+    "providerCredentialsRequiredAtBuild": { "const": false },
+    "license": { "type": ["string", "null"], "maxLength": 256 },
+    "licenseReview": { "$ref": "#/$defs/review" },
+    "rightsConclusion": { "enum": ["pending", "approved"] },
+    "accessibilityConclusion": { "enum": ["pending", "approved"] },
+    "publicDistributionReady": { "type": "boolean" },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "containsAPIKeys",
+        "containsTaskContent",
+        "containsPersonalPaths",
+        "networkRequiredAtRuntime"
+      ],
+      "properties": {
+        "containsAPIKeys": { "const": false },
+        "containsTaskContent": { "const": false },
+        "containsPersonalPaths": { "const": false },
+        "networkRequiredAtRuntime": { "const": false }
+      }
+    },
+    "fallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "worksWithoutProvider"],
+      "properties": {
+        "strategy": { "const": "localizedTextStaticSpriteAndAudioOnly" },
+        "worksWithoutProvider": { "const": true }
+      }
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 512,
+      "items": { "$ref": "#/$defs/asset" }
+    }
+  },
+  "$defs": {
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reviewerID", "reviewedAt", "version"],
+      "properties": {
+        "status": { "enum": ["pending", "approved", "rejected", "notApplicable"] },
+        "reviewerID": { "type": ["string", "null"], "maxLength": 96 },
+        "reviewedAt": {
+          "type": ["string", "null"],
+          "maxLength": 40
+        },
+        "version": { "type": "integer", "minimum": 1, "maximum": 1000000 }
+      }
+    },
+    "localizedNullableText": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["zh-Hans", "en"],
+      "properties": {
+        "zh-Hans": { "type": ["string", "null"], "maxLength": 2000 },
+        "en": { "type": ["string", "null"], "maxLength": 2000 }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "path",
+        "bundlePath",
+        "kind",
+        "bytes",
+        "sha256",
+        "provenance",
+        "accessibility",
+        "fallback"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^starter\\.[a-z0-9][a-z0-9._-]*$",
+          "maxLength": 160
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._/-]+$",
+          "maxLength": 240
+        },
+        "bundlePath": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._/-]+$",
+          "maxLength": 240
+        },
+        "kind": {
+          "enum": ["video", "speech", "sound", "image", "icon", "data", "localization"]
+        },
+        "bytes": { "type": "integer", "minimum": 1, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source",
+            "author",
+            "provider",
+            "license",
+            "authorizationBasis",
+            "allowedUses",
+            "attribution",
+            "adultFictionStatus",
+            "evidenceID",
+            "review"
+          ],
+          "properties": {
+            "source": {
+              "enum": [
+                "providerGeneratedVideo",
+                "providerGeneratedSpeech",
+                "prototypeDerivative",
+                "repositoryExistingAudio",
+                "repositoryAuthoredText"
+              ]
+            },
+            "author": { "type": ["string", "null"], "maxLength": 160 },
+            "provider": { "type": ["string", "null"], "maxLength": 160 },
+            "license": { "type": ["string", "null"], "maxLength": 256 },
+            "authorizationBasis": {
+              "enum": ["owned", "licensed", "commissioned", "providerOutput", "publicDomain", null]
+            },
+            "allowedUses": {
+              "type": "array",
+              "uniqueItems": true,
+              "maxItems": 16,
+              "items": {
+                "enum": [
+                  "localUse",
+                  "backup",
+                  "internalDevelopment",
+                  "automatedTesting",
+                  "freeRedistributionWithCore",
+                  "accessibilityAdaptation"
+                ]
+              }
+            },
+            "attribution": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["required", "text"],
+              "properties": {
+                "required": { "type": ["boolean", "null"] },
+                "text": { "type": ["string", "null"], "maxLength": 500 }
+              }
+            },
+            "adultFictionStatus": {
+              "enum": ["fictionalAdult", "verifiedAdult", "noPeople", "notApplicable", "unverified"]
+            },
+            "evidenceID": { "type": ["string", "null"], "maxLength": 160 },
+            "review": { "$ref": "#/$defs/review" }
+          }
+        },
+        "accessibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["altText", "captions", "soundDescription", "review"],
+          "properties": {
+            "altText": { "$ref": "#/$defs/localizedNullableText" },
+            "captions": { "$ref": "#/$defs/localizedNullableText" },
+            "soundDescription": { "$ref": "#/$defs/localizedNullableText" },
+            "review": { "$ref": "#/$defs/review" }
+          }
+        },
+        "fallback": {
+          "enum": ["staticSprite", "localizedText", "systemSymbol", "builtInDefaults"]
+        }
+      }
+    }
+  }
+}

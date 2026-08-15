@@ -1,0 +1,559 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.example/schemas/content-pack-v2.schema.json",
+  "title": "Chengyin Content Pack v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "version",
+    "minAppVersion",
+    "tier",
+    "character",
+    "locales",
+    "assets",
+    "license",
+    "experiences"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)+$"
+    },
+    "version": { "$ref": "#/$defs/semanticVersion" },
+    "minAppVersion": { "$ref": "#/$defs/semanticVersion" },
+    "tier": { "enum": ["free", "paid", "local"] },
+    "character": { "type": "string", "minLength": 1, "maxLength": 96 },
+    "locales": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 35,
+        "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+      }
+    },
+    "assets": {
+      "type": "array",
+      "maxItems": 256,
+      "items": { "$ref": "#/$defs/asset" }
+    },
+    "license": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "experiences": {
+      "type": "array",
+      "maxItems": 64,
+      "items": { "$ref": "#/$defs/experience" }
+    },
+    "contribution": { "$ref": "#/$defs/contribution" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["contribution"],
+        "properties": {
+          "contribution": {
+            "required": ["contractVersion"],
+            "properties": { "contractVersion": { "const": 2 } }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "assets": {
+            "items": {
+              "properties": {
+                "id": { "pattern": "^[a-z0-9][a-z0-9._-]{0,95}$" }
+              }
+            }
+          },
+          "experiences": {
+            "items": {
+              "properties": {
+                "id": { "pattern": "^[a-z0-9][a-z0-9._-]{0,95}$" }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "trigger": {
+      "anyOf": [
+        {
+          "enum": [
+            "idle",
+            "singleTap",
+            "doubleTap",
+            "longPressRelease",
+            "drag",
+            "fling",
+            "taskStarted",
+            "taskLongRunning",
+            "taskCompleted",
+            "taskFailed",
+            "taskCancelled",
+            "responseReady",
+            "morning",
+            "evening",
+            "hydration",
+            "stretch"
+          ]
+        },
+        { "type": "string", "pattern": "^(gameWon:|manual:).+$" }
+      ]
+    },
+    "cropAnchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "scale"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0, "maximum": 1 },
+        "y": { "type": "number", "minimum": 0, "maximum": 1 },
+        "scale": { "type": "number", "minimum": 1, "maximum": 8 }
+      }
+    },
+    "focalKeyframe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timeMs", "x", "y", "scale"],
+      "properties": {
+        "timeMs": { "type": "integer", "minimum": 0, "maximum": 600000 },
+        "x": { "type": "number", "minimum": 0, "maximum": 1 },
+        "y": { "type": "number", "minimum": 0, "maximum": 1 },
+        "scale": { "type": "number", "minimum": 1, "maximum": 8 }
+      }
+    },
+    "safeArea": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "width", "height"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0, "maximum": 1 },
+        "y": { "type": "number", "minimum": 0, "maximum": 1 },
+        "width": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "height": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "path", "sha256", "triggers", "tags"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "kind": { "enum": ["video", "audio", "image", "game", "localization"] },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+        },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "durationMs": { "type": ["integer", "null"], "minimum": 1 },
+        "width": { "type": ["integer", "null"], "minimum": 1 },
+        "height": { "type": ["integer", "null"], "minimum": 1 },
+        "aspectRatio": { "type": ["string", "null"], "minLength": 1 },
+        "hasNativeAudio": { "type": ["boolean", "null"] },
+        "loop": { "type": ["boolean", "null"] },
+        "cropAnchors": {
+          "type": ["object", "null"],
+          "additionalProperties": { "$ref": "#/$defs/cropAnchor" }
+        },
+        "focalTracks": {
+          "type": ["object", "null"],
+          "propertyNames": {
+            "enum": ["pet", "stage", "fullscreen", "partial", "full"]
+          },
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 32,
+            "items": { "$ref": "#/$defs/focalKeyframe" }
+          }
+        },
+        "safeAreas": {
+          "type": ["object", "null"],
+          "propertyNames": {
+            "enum": ["pet", "stage", "fullscreen", "partial", "full"]
+          },
+          "additionalProperties": { "$ref": "#/$defs/safeArea" }
+        },
+        "triggers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/trigger" }
+        },
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 64 }
+        },
+        "cooldownSeconds": { "type": ["integer", "null"], "minimum": 0 },
+        "weight": { "type": ["number", "null"], "exclusiveMinimum": 0 }
+      }
+    },
+    "rightsRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assetID",
+        "origin",
+        "holder",
+        "license",
+        "evidenceID",
+        "commercialUseReviewed",
+        "subjectStatus"
+      ],
+      "properties": {
+        "assetID": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "origin": {
+          "enum": ["original", "generative", "licensed", "publicDomain"]
+        },
+        "holder": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "license": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "evidenceID": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "sourceSHA256": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "commercialUseReviewed": { "type": "boolean" },
+        "subjectStatus": {
+          "enum": [
+            "fictionalAdult",
+            "verifiedAdult",
+            "noPerson",
+            "notApplicable"
+          ]
+        },
+        "source": { "type": ["string", "null"], "minLength": 1, "maxLength": 512 },
+        "author": { "type": ["string", "null"], "minLength": 1, "maxLength": 256 },
+        "provider": { "type": ["string", "null"], "minLength": 1, "maxLength": 256 },
+        "authorizationBasis": {
+          "type": ["string", "null"],
+          "enum": ["owned", "licensed", "commissioned", "providerOutput", "publicDomain", null]
+        },
+        "allowedUses": {
+          "type": ["array", "null"],
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/allowedUse" }
+        },
+        "attribution": {
+          "anyOf": [
+            { "$ref": "#/$defs/attribution" },
+            { "type": "null" }
+          ]
+        },
+        "review": {
+          "anyOf": [
+            { "$ref": "#/$defs/review" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "strictRightsRecord": {
+      "allOf": [
+        { "$ref": "#/$defs/rightsRecord" },
+        {
+          "required": [
+            "source",
+            "author",
+            "authorizationBasis",
+            "allowedUses",
+            "attribution",
+            "review"
+          ]
+        }
+      ]
+    },
+    "allowedUse": {
+      "enum": ["useInApp", "redistribution", "modification", "commercialUse"]
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "text": { "type": ["string", "null"], "maxLength": 1000 }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "version"],
+      "properties": {
+        "status": { "enum": ["draft", "pending", "approved", "rejected"] },
+        "version": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "reviewerID": {
+          "type": ["string", "null"],
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        }
+      }
+    },
+    "packageProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "author",
+        "origin",
+        "license",
+        "authorizationBasis",
+        "allowedUses",
+        "attribution",
+        "adultFictionStatus",
+        "evidenceID",
+        "review"
+      ],
+      "properties": {
+        "source": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "author": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "provider": { "type": ["string", "null"], "minLength": 1, "maxLength": 256 },
+        "origin": { "enum": ["original", "generative", "licensed", "publicDomain"] },
+        "license": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "authorizationBasis": {
+          "enum": ["owned", "licensed", "commissioned", "providerOutput", "publicDomain"]
+        },
+        "allowedUses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/allowedUse" }
+        },
+        "attribution": { "$ref": "#/$defs/attribution" },
+        "adultFictionStatus": {
+          "enum": [
+            "fictionalAdultsOnly",
+            "verifiedAdultsOnly",
+            "mixedVerifiedAndFictionalAdults",
+            "noPeople"
+          ]
+        },
+        "evidenceID": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "review": { "$ref": "#/$defs/review" }
+      }
+    },
+    "localizedCopy": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000
+      }
+    },
+    "localizedTranscript": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      }
+    },
+    "accessibilityRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assetID",
+        "descriptions",
+        "flashingLights",
+        "suddenLoudAudio"
+      ],
+      "properties": {
+        "assetID": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "descriptions": { "$ref": "#/$defs/localizedCopy" },
+        "transcripts": {
+          "anyOf": [
+            { "$ref": "#/$defs/localizedTranscript" },
+            { "type": "null" }
+          ]
+        },
+        "altText": {
+          "anyOf": [
+            { "$ref": "#/$defs/localizedCopy" },
+            { "type": "null" }
+          ]
+        },
+        "captions": {
+          "anyOf": [
+            { "$ref": "#/$defs/localizedTranscript" },
+            { "type": "null" }
+          ]
+        },
+        "soundDescriptions": {
+          "anyOf": [
+            { "$ref": "#/$defs/localizedTranscript" },
+            { "type": "null" }
+          ]
+        },
+        "flashingLights": { "type": "boolean" },
+        "suddenLoudAudio": { "type": "boolean" },
+        "review": {
+          "anyOf": [
+            { "$ref": "#/$defs/review" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "strictAccessibilityRecord": {
+      "allOf": [
+        { "$ref": "#/$defs/accessibilityRecord" },
+        { "required": ["altText", "captions", "soundDescriptions", "review"] }
+      ]
+    },
+    "assetFallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetID", "strategy"],
+      "properties": {
+        "assetID": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "strategy": { "enum": ["starter", "skip"] }
+      }
+    },
+    "contribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rights", "accessibility", "fallback"],
+      "properties": {
+        "contractVersion": { "const": 2 },
+        "package": { "$ref": "#/$defs/packageProvenance" },
+        "rights": {
+          "type": "array",
+          "maxItems": 256,
+          "items": { "$ref": "#/$defs/rightsRecord" }
+        },
+        "accessibility": {
+          "type": "array",
+          "maxItems": 256,
+          "items": { "$ref": "#/$defs/accessibilityRecord" }
+        },
+        "fallback": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["strategy"],
+          "properties": {
+            "strategy": { "const": "starter" },
+            "assets": {
+              "type": "array",
+              "maxItems": 256,
+              "items": { "$ref": "#/$defs/assetFallback" }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["contractVersion"],
+            "properties": { "contractVersion": { "const": 2 } }
+          },
+          "then": {
+            "required": ["package"],
+            "properties": {
+              "rights": {
+                "type": "array",
+                "maxItems": 256,
+                "items": { "$ref": "#/$defs/strictRightsRecord" }
+              },
+              "accessibility": {
+                "type": "array",
+                "maxItems": 256,
+                "items": { "$ref": "#/$defs/strictAccessibilityRecord" }
+              },
+              "fallback": {
+                "type": "object",
+                "required": ["strategy", "assets"]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "experienceStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetID", "role"],
+      "properties": {
+        "assetID": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "role": { "enum": ["enter", "notice", "react", "settle", "exit"] },
+        "minimumPlaybackMs": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "maximum": 60000
+        },
+        "transition": { "type": ["string", "null"], "enum": ["cut", "crossfade", null] }
+      }
+    },
+    "experience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "triggers", "steps", "returnPolicy"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,95}$"
+        },
+        "kind": { "enum": ["reaction", "ritual", "sceneStory", "microGameReward"] },
+        "triggers": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/trigger" }
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": { "$ref": "#/$defs/experienceStep" }
+        },
+        "locales": {
+          "type": ["array", "null"],
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 35,
+            "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+          }
+        },
+        "cooldownSeconds": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "maximum": 604800
+        },
+        "weight": {
+          "type": ["number", "null"],
+          "minimum": 0.01,
+          "maximum": 100
+        },
+        "returnPolicy": {
+          "enum": ["previousMode", "keepCurrentMode", "remainExpanded"]
+        }
+      }
+    }
+  }
+}

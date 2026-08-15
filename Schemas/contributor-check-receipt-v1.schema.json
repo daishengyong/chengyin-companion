@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.local/schemas/contributor-check-receipt-v1.schema.json",
+  "title": "Chengyin local contributor-check receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "status",
+    "profile",
+    "networkRequired",
+    "authoritativeSourceMutation",
+    "releaseState",
+    "passedCount",
+    "failedCount",
+    "skippedCount",
+    "checks",
+    "code",
+    "message",
+    "recoveryAction"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "chengyin.contributor-check/v1" },
+    "status": { "enum": ["PASS", "FAIL"] },
+    "profile": { "enum": ["quick", "full", "pack", "unknown"] },
+    "networkRequired": { "const": false },
+    "authoritativeSourceMutation": { "const": false },
+    "releaseState": { "const": "NOT_PUBLIC_RELEASE_READY" },
+    "passedCount": { "type": "integer", "minimum": 0, "maximum": 128 },
+    "failedCount": { "type": "integer", "minimum": 0, "maximum": 128 },
+    "skippedCount": { "type": "integer", "minimum": 0, "maximum": 128 },
+    "checks": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "recoveryAction"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+          },
+          "status": { "enum": ["PASS", "FAIL", "SKIP"] },
+          "recoveryAction": {
+            "type": ["string", "null"],
+            "maxLength": 320
+          }
+        }
+      }
+    },
+    "code": {
+      "type": ["string", "null"],
+      "pattern": "^CONTRIBUTOR_CHECK_[A-Z0-9_]+$"
+    },
+    "message": { "type": "string", "minLength": 1, "maxLength": 320 },
+    "recoveryAction": {
+      "type": ["string", "null"],
+      "maxLength": 320
+    }
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chengyin.local/schemas/local-preview-receipt-v1.schema.json",
+  "title": "Chengyin zero-install local preview receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "contract",
+    "status",
+    "code",
+    "mode",
+    "message",
+    "recoveryAction",
+    "networkRequired",
+    "providerCredentialsRequired",
+    "applicationsDirectoryModified",
+    "preflight",
+    "processBefore",
+    "processStop",
+    "build",
+    "launch",
+    "rollback",
+    "releaseState"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "contract": { "const": "chengyin.local-preview/v1" },
+    "status": { "enum": ["PASS", "FAIL"] },
+    "code": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^LOCAL_PREVIEW_[A-Z0-9_]+$" }
+      ]
+    },
+    "mode": { "enum": ["check-only", "update-and-launch"] },
+    "message": { "type": "string", "minLength": 1, "maxLength": 280 },
+    "recoveryAction": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "minLength": 1, "maxLength": 400 }
+      ]
+    },
+    "networkRequired": { "const": false },
+    "providerCredentialsRequired": { "const": false },
+    "applicationsDirectoryModified": { "const": false },
+    "preflight": { "enum": ["NOT_RUN", "PASS", "FAIL"] },
+    "processBefore": { "$ref": "#/$defs/processSummary" },
+    "processStop": { "enum": ["NOT_NEEDED", "PASS", "FAIL"] },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "identity"],
+      "properties": {
+        "status": { "enum": ["NOT_RUN", "PASS", "FAIL"] },
+        "identity": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "string",
+              "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\+[0-9]+\\.[0-9a-f]{12}$"
+            }
+          ]
+        }
+      }
+    },
+    "launch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "processCount", "projectPreviewCount", "identityCurrent"],
+      "properties": {
+        "status": { "enum": ["NOT_RUN", "PASS", "FAIL"] },
+        "processCount": { "type": "integer", "minimum": 0, "maximum": 16 },
+        "projectPreviewCount": { "type": "integer", "minimum": 0, "maximum": 16 },
+        "identityCurrent": { "type": "boolean" }
+      }
+    },
+    "rollback": {
+      "enum": [
+        "NOT_NEEDED",
+        "PREVIOUS_PREVIEW_RELAUNCH_REQUESTED",
+        "PREVIOUS_PREVIEW_RELAUNCH_FAILED"
+      ]
+    },
+    "releaseState": { "const": "NOT_PUBLIC_RELEASE_READY" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "status": { "const": "PASS" } },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "code": { "type": "null" },
+          "recoveryAction": { "type": "null" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "status": { "const": "FAIL" } },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "code": { "type": "string", "pattern": "^LOCAL_PREVIEW_[A-Z0-9_]+$" },
+          "recoveryAction": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": { "const": "update-and-launch" },
+          "status": { "const": "PASS" }
+        },
+        "required": ["mode", "status"]
+      },
+      "then": {
+        "properties": {
+          "build": {
+            "properties": { "status": { "const": "PASS" } }
+          },
+          "launch": {
+            "properties": {
+              "status": { "const": "PASS" },
+              "identityCurrent": { "const": true },
+              "processCount": { "const": 1 },
+              "projectPreviewCount": { "const": 1 }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "processSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "processCount",
+        "projectPreviewCount",
+        "installedCount",
+        "unverifiedCount"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "notInspected",
+            "notRunning",
+            "projectPreview",
+            "installed",
+            "unverified",
+            "conflict"
+          ]
+        },
+        "processCount": { "type": "integer", "minimum": 0, "maximum": 16 },
+        "projectPreviewCount": { "type": "integer", "minimum": 0, "maximum": 16 },
+        "installedCount": { "type": "integer", "minimum": 0, "maximum": 16 },
+        "unverifiedCount": { "type": "integer", "minimum": 0, "maximum": 16 }
+      }
+    }
+  }
+}
