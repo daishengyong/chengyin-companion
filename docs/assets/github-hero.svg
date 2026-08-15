@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="460" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
+  <title id="title">Chengyin Companion for Codex</title>
+  <desc id="desc">A local-first macOS companion that turns trusted Codex task events into playful desktop reactions.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090b16"/>
+      <stop offset="0.52" stop-color="#18152e"/>
+      <stop offset="1" stop-color="#07252d"/>
+    </linearGradient>
+    <linearGradient id="orb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff72bc"/>
+      <stop offset="0.52" stop-color="#a98bff"/>
+      <stop offset="1" stop-color="#55e8db"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff72bc" stop-opacity="0.25"/>
+      <stop offset="0.55" stop-color="#a98bff" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#55e8db" stop-opacity="0.25"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="460" rx="28" fill="url(#bg)"/>
+  <circle cx="1050" cy="-10" r="250" fill="#6d5cf6" opacity="0.08"/>
+  <circle cx="820" cy="470" r="260" fill="#27d7c6" opacity="0.06"/>
+
+  <g transform="translate(72 64)">
+    <rect width="184" height="34" rx="17" fill="#ffffff" opacity="0.08" stroke="#ffffff" stroke-opacity="0.12"/>
+    <circle cx="21" cy="17" r="6" fill="#55e8a6"/>
+    <text x="36" y="22" fill="#dce6ee" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="14" font-weight="600">LOCAL-FIRST · macOS</text>
+
+    <text x="0" y="104" fill="#ffffff" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="55" font-weight="750" letter-spacing="-1.8">Chengyin Companion</text>
+    <text x="0" y="148" fill="#c8c7db" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="23">Give your Codex workflow a heartbeat.</text>
+
+    <g transform="translate(0 195)">
+      <rect width="470" height="116" rx="18" fill="#0f1221" stroke="#ffffff" stroke-opacity="0.12"/>
+      <circle cx="28" cy="27" r="5" fill="#ff6b7a"/><circle cx="46" cy="27" r="5" fill="#ffd36b"/><circle cx="64" cy="27" r="5" fill="#55e8a6"/>
+      <text x="25" y="68" fill="#8d94ad" font-family="SFMono-Regular,Consolas,monospace" font-size="15">Codex</text>
+      <text x="88" y="68" fill="#f1f4f8" font-family="SFMono-Regular,Consolas,monospace" font-size="15">task.completed</text>
+      <rect x="25" y="84" width="275" height="7" rx="3.5" fill="#2c3248"/>
+      <rect x="25" y="84" width="216" height="7" rx="3.5" fill="url(#line)"/>
+      <circle cx="430" cy="66" r="13" fill="#55e8a6" opacity="0.16"/>
+      <path d="M423 66l5 5 9-11" fill="none" stroke="#65f2b1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <path d="M574 230 C650 230 662 230 714 230" fill="none" stroke="url(#line)" stroke-width="3" stroke-dasharray="7 9"/>
+  <circle cx="644" cy="230" r="5" fill="#b48cff" filter="url(#glow)"/>
+
+  <g transform="translate(756 74)">
+    <rect x="0" y="0" width="352" height="312" rx="38" fill="#101322" stroke="#ffffff" stroke-opacity="0.15"/>
+    <rect x="15" y="15" width="322" height="282" rx="29" fill="#14182b"/>
+
+    <circle cx="176" cy="118" r="67" fill="url(#orb)" opacity="0.18" filter="url(#glow)"/>
+    <circle cx="176" cy="118" r="52" fill="url(#orb)"/>
+    <path d="M153 112c8-16 38-16 46 0M153 132c10 13 36 13 46 0" fill="none" stroke="#15162a" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="154" cy="105" r="4" fill="#15162a"/><circle cx="198" cy="105" r="4" fill="#15162a"/>
+
+    <text x="176" y="210" text-anchor="middle" fill="#ffffff" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="24" font-weight="700">Your companion is ready</text>
+    <text x="176" y="240" text-anchor="middle" fill="#999fb6" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="15">tap · hold · drag · play</text>
+
+    <g transform="translate(62 264)">
+      <rect width="52" height="24" rx="12" fill="#ff72bc" opacity="0.16"/><text x="26" y="17" text-anchor="middle" fill="#ff9bce" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="12">react</text>
+      <rect x="65" width="68" height="24" rx="12" fill="#a98bff" opacity="0.16"/><text x="99" y="17" text-anchor="middle" fill="#c0a9ff" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="12">remind</text>
+      <rect x="146" width="82" height="24" rx="12" fill="#55e8db" opacity="0.16"/><text x="187" y="17" text-anchor="middle" fill="#7ff3e8" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="12">mini-game</text>
+    </g>
+  </g>
+</svg>
