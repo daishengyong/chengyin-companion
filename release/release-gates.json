@@ -5,11 +5,12 @@
     "evidenceRefs": []
   },
   "finalLicense": {
-    "status": "pending-owner-decision",
+    "status": "approved",
     "evidenceRefs": [
       "LICENSE",
       "LICENSE-SCOPE.md",
-      "owner-choice:2026-08-15:MIT-code-only"
+      "owner-choice:2026-08-15:MIT-code-only",
+      "github:daishengyong/chengyin-companion@71caba3"
     ]
   },
   "developerID": {
