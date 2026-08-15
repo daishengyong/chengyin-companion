@@ -59,6 +59,10 @@ copy_clean_fixture() {
     "$fixture_root/docs/PRODUCT-BOUNDARY.md"
   cp "$repo_dir/docs/PRODUCT-BOUNDARY.zh-Hans.md" \
     "$fixture_root/docs/PRODUCT-BOUNDARY.zh-Hans.md"
+  cp "$repo_dir/docs/QUICKSTART.md" \
+    "$fixture_root/docs/QUICKSTART.md"
+  cp "$repo_dir/docs/QUICKSTART.zh-Hans.md" \
+    "$fixture_root/docs/QUICKSTART.zh-Hans.md"
 }
 
 run_fixture() {
@@ -73,11 +77,16 @@ run_fixture >/dev/null
 python3 -c '
 from pathlib import Path
 p = Path("'$fixture_root'/README.en.md")
-p.write_text(p.read_text().replace(
-    "./scripts/bootstrap-local.sh --check-only",
-    "./scripts/bootstrap-local.sh --incorrect-option",
-    1,
-), encoding="utf-8")
+text = p.read_text()
+before, separator, after = text.rpartition(
+    "./scripts/bootstrap-local.sh --check-only"
+)
+if not separator:
+    raise SystemExit("baseline bootstrap command is missing")
+p.write_text(
+    before + "./scripts/bootstrap-local.sh --incorrect-option" + after,
+    encoding="utf-8",
+)
 '
 set +e
 command_failure="$(run_fixture)"

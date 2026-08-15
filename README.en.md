@@ -2,62 +2,92 @@
 
 [简体中文](README.md) · English
 
-A lightweight desktop companion for macOS.
+![Chengyin Companion: give your Codex workflow a heartbeat](docs/assets/github-hero.svg)
 
-> The owner has selected the [MIT License](LICENSE) for the complete, usable, local-first and free-of-charge code. MIT covers the code and associated software documentation only; Starter video, voice, image and brand media still require separate licenses. Until the media-rights inventory is approved, do not describe the whole media repository as broadly OSI open source or present an unsigned, unnotarized local build as a formal binary release. See the [license scope](LICENSE-SCOPE.md).
+[![macOS 14+](https://img.shields.io/badge/macOS-14%2B-111827?logo=apple)](docs/COMPATIBILITY.md)
+[![Apple Silicon](https://img.shields.io/badge/Apple%20Silicon-M1%E2%80%93M4-6d5cf6)](docs/COMPATIBILITY.md)
+[![Swift](https://img.shields.io/badge/Swift-native-f97316?logo=swift&logoColor=white)](Package.swift)
+[![MIT code](https://img.shields.io/badge/code-MIT-55c2b5)](LICENSE-SCOPE.md)
 
-> The GitHub repository uses the [public code-only mode](PUBLIC-CODE-ONLY.md): a clone still builds, runs, responds, and imports Content Pack v2 packages, while showing animated system-symbol fallbacks and excluding all private Starter media.
+Turn the rhythm of Codex work into a visible, playful macOS companion. It can react when work finishes, nudge you to take a break, and respond to taps, holds, drags, and mini-games. It runs locally by default, records no microphone, uploads no code, and requires no account.
 
-## Quick start after cloning
+**[Try it in two minutes](https://github.com/daishengyong/chengyin-companion#try-it-in-two-minutes-ask-codex)** · **[First interactions](https://github.com/daishengyong/chengyin-companion#first-interactions)** · **[Content packs](docs/PACK-SPEC-v2.md)** · **[Contribute](CONTRIBUTING.en.md)** · **[Share ideas](https://github.com/daishengyong/chengyin-companion/discussions)** · **[Report an issue](https://github.com/daishengyong/chengyin-companion/issues)**
 
-Source preview currently supports Apple Silicon, macOS 14 or newer, and Python 3.9 or newer. The shortest command checks the Mac, reliably stops this clone's old preview, rebuilds, and launches the project-local app without modifying `/Applications`:
+## What is available now
+
+| Capability | Public repository status |
+| --- | --- |
+| Three desktop presentations, gesture feedback, care rhythms, and six mini-games | Builds and runs |
+| Content Pack v1/v2 creation, auditing, import, and safe fallback | Available |
+| Local operation without an account, microphone, or telemetry | Available |
+| Animated system-symbol fallback | Included by default |
+| Full character video, voice, and branded Starter media | Not public; rights are reviewed asset by asset |
+| Developer ID signed and notarized DMG for non-technical users | In preparation; an unsigned preview is not presented as a formal release |
+
+The public repository is the complete **MIT code edition**, not a timed demo. It intentionally excludes real-person and brand media whose public rights are not approved. You can use the interaction system immediately and import Content Packs you have the right to use. See [public code-only mode](PUBLIC-CODE-ONLY.md) and [license scope](LICENSE-SCOPE.md).
+
+## Try it in two minutes: ask Codex
+
+Copy the entire prompt below into Codex. It checks the Mac before cloning, building, installing, and launching. It does not use `sudo`, call Seedance/TTS, read API keys, or edit `~/.codex/config.toml`.
+
+```prompt
+Please install and launch the public source preview of Chengyin Companion:
+https://github.com/daishengyong/chengyin-companion
+
+Requirements:
+1. Confirm this is an Apple Silicon Mac running macOS 14+, then check Xcode Command Line Tools and Python 3.9+.
+2. Clone into ~/ChengyinCompanion if it does not exist. If that directory already has uncommitted changes, preserve it and use a fresh temporary clone.
+3. Run ./scripts/bootstrap-local.sh --check-only first.
+4. Run ./scripts/bootstrap-local.sh only after preflight passes, then confirm that the app installs and launches.
+5. Do not use sudo, bypass macOS security, read or upload secrets, call Seedance/TTS, or modify ~/.codex/config.toml.
+6. Report the installed version, application location, launch result, and any public-release gates that remain pending.
+```
+
+Manual installation is four commands:
+
+```bash
+git clone https://github.com/daishengyong/chengyin-companion.git ~/ChengyinCompanion
+cd ~/ChengyinCompanion
+./scripts/bootstrap-local.sh --check-only
+./scripts/bootstrap-local.sh
+```
+
+A source install creates a local ad-hoc development build, not a notarized public DMG. It does not silently replace the global Codex notification configuration. Use `Command + Shift + R` to preview task-completion celebration; all other direct interactions work immediately. See the [new-user quickstart](docs/QUICKSTART.md) for recovery and troubleshooting.
+
+## First interactions
+
+| Action | Response |
+| --- | --- |
+| Single click | A short response appropriate to the current daypart |
+| Double click | Open a life or fantasy scene |
+| Hold and release | Affection feedback and a randomized close action |
+| Drag or fling | Pickup, inertia, voice, and edge docking |
+| `Command + Shift + M` | Cycle pet, stage, and fullscreen |
+| `Command + Shift + G` | Start the 20-second “Catch Me” game |
+| Open the magic wand | See actions, scenes, and mini-games together |
+
+The code edition uses animated system graphics in place of unpublished character media. After installing a lawful Content Pack, the same runtime automatically uses its videos, audio, framing, and failure fallbacks.
+
+## Developer quick entry
+
+Launch a project-local preview without installing into `/Applications`:
 
 ```bash
 ./scripts/preview-local.sh
 ```
 
-Inspect preview prerequisites and process conflicts without building, stopping, or launching:
-
-```bash
-./scripts/preview-local.sh --check-only --json
-```
-
-Only when a transactional `/Applications` install and installed-process verification are intended, use:
-
-```bash
-./scripts/bootstrap-local.sh
-```
-
-Inspect the environment without building or installing:
-
-```bash
-./scripts/bootstrap-local.sh --check-only
-```
-
-In automation that explicitly forbids installation and GUI authorization, validate source prerequisites only and leave owner gates pending:
-
-```bash
-./scripts/run-first-use-low-impact-audit.sh --zero-authorization
-```
-
-For the fastest network-free, path-safe contribution preflight:
+Run the fastest offline contributor preflight:
 
 ```bash
 ./scripts/check-contribution.py --profile quick --json
 python3 scripts/audit-public-source-secrets.py --json
 ```
 
-Verify that a source package built from the clone contains the build, contribution, and recovery surfaces and runs from an isolated copy:
-
-```bash
-./scripts/run-portable-source-smoke.sh
-```
-
-The flow does not call Seedance or TTS, read API keys, edit Codex configuration, request microphone access, create an account, or upload diagnostics. A source install is an ad-hoc signed local development build; it does not pretend to be a notarized release.
-A Python older than 3.9 may still be named `python3` while being incompatible. The preflight now returns a stable code and an actionable install/select-newer-interpreter recovery before building, instead of failing later inside a creator tool. The current Mac's system Python 3.9.6 runs the critical tool matrix, so contributors are not forced to install 3.10 merely to satisfy an inflated floor.
+The source flow never calls Seedance/TTS, reads API keys, requests microphone access, creates an account, or uploads diagnostics. Python compatibility, zero-authorization inspection, and isolated source-package checks are documented in the [new-user quickstart](docs/QUICKSTART.md).
 
 ## Project map
 
+- [Non-technical installation, first play, and recovery](docs/QUICKSTART.md)
 - [Local-first boundary: no monetization, account, ads or automatic sharing](docs/PRODUCT-BOUNDARY.md)
 - [Codex companion product and engineering architecture](docs/CODEX-PRODUCT-ARCHITECTURE.md)
 - [Global original-persona and Seedance content system](docs/GLOBAL-PERSONA-SYSTEM.md)
@@ -87,7 +117,12 @@ A Python older than 3.9 may still be named `python3` while being incompatible. T
 - [Code of conduct](CODE_OF_CONDUCT.md)
 - [Support and issue reporting](SUPPORT.md)
 
-Product capabilities:
+## Complete product capabilities
+
+These capabilities are implemented and continuously checked in the source.
+The public code edition replaces rights-pending built-in character media with
+animated system graphics; a lawful Content Pack activates video and audio
+through the same runtime.
 
 - Native SwiftUI content hosted by an AppKit floating panel.
 - No recording, dictation, chat thread, or microphone permission.

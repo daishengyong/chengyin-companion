@@ -2,64 +2,92 @@
 
 简体中文 · [English](README.en.md)
 
-一个面向 macOS 的轻量桌面伴侣：
+![澄音 Companion：让 Codex 工作流拥有心跳](docs/assets/github-hero.svg)
 
-> 当前代码由所有者选择 [MIT License](LICENSE)，并保持完整可用、本地优先且不收费。MIT 只覆盖代码及随附软件文档；Starter 视频、语音、图片和品牌素材仍需单独许可。在媒体权利清点完成前，不把整个素材仓库笼统宣称为 OSI 开源，也不把未签名、公证的本地构建冒充正式二进制发行版。详见[许可证范围](LICENSE-SCOPE.md)。
+[![macOS 14+](https://img.shields.io/badge/macOS-14%2B-111827?logo=apple)](docs/COMPATIBILITY.md)
+[![Apple Silicon](https://img.shields.io/badge/Apple%20Silicon-M1%E2%80%93M4-6d5cf6)](docs/COMPATIBILITY.md)
+[![Swift](https://img.shields.io/badge/Swift-native-f97316?logo=swift&logoColor=white)](Package.swift)
+[![MIT code](https://img.shields.io/badge/code-MIT-55c2b5)](LICENSE-SCOPE.md)
 
-> GitHub 公开仓库采用[无内置媒体模式](PUBLIC-CODE-ONLY.md)：克隆后仍可构建、运行、互动和导入 Content Pack v2，但只显示动态系统图形回退，不包含私有 Starter 素材。
+让 Codex 的工作节奏变成一个看得见、可以逗玩的 macOS 桌面伴侣：任务结束时回应你，工作久了提醒休息，空闲时可以轻点、长按、拖拽或玩小游戏。默认本地运行，不录音、不上传代码，也不要求账户。
 
-## 克隆后快速开始
+**[两分钟体验](https://github.com/daishengyong/chengyin-companion#两分钟体验推荐直接交给-codex)** · **[第一次怎么玩](https://github.com/daishengyong/chengyin-companion#第一次怎么玩)** · **[内容包](docs/PACK-SPEC-v2.md)** · **[参与贡献](CONTRIBUTING.md)** · **[交流玩法](https://github.com/daishengyong/chengyin-companion/discussions)** · **[问题反馈](https://github.com/daishengyong/chengyin-companion/issues)**
 
-当前源码预览支持 Apple Silicon、macOS 14+ 与 Python 3.9+。最快的一条命令会检查本机环境、
-可靠结束当前克隆的旧预览、重新构建并启动项目内应用；它不修改 `/Applications`：
+## 现在可以得到什么
+
+| 能力 | 当前公开仓库状态 |
+| --- | --- |
+| 三种桌面形态、手势反馈、提醒与六个小游戏 | 可构建、可运行 |
+| Content Pack v1/v2 创建、审计、导入与失败回退 | 可用 |
+| 无账户、无麦克风、无遥测的本地运行 | 可用 |
+| 动态系统图形回退 | 默认包含 |
+| 完整人物视频、语音和品牌 Starter | 未公开，仍在逐项权利审阅 |
+| 面向普通用户的 Developer ID 签名、公证 DMG | 准备中，不能用未签名预览冒充正式版 |
+
+公开仓库是完整的 **MIT 代码版**，不是三分钟试用；只是不会夹带权利未通过的真人或品牌素材。你可以立即体验交互逻辑，也可以导入自己拥有使用权的 Content Pack。具体范围见[公开无媒体模式](PUBLIC-CODE-ONLY.md)和[许可证范围](LICENSE-SCOPE.md)。
+
+## 两分钟体验：推荐直接交给 Codex
+
+复制下面整段给 Codex。它会先检查环境，再克隆、构建、安装和启动；不会使用 `sudo`、调用 Seedance/TTS、读取 API Key 或修改 `~/.codex/config.toml`。
+
+```prompt
+请帮我安装并启动 Chengyin Companion 的公开源码预览：
+https://github.com/daishengyong/chengyin-companion
+
+要求：
+1. 确认这是 Apple Silicon Mac、macOS 14+，并检查 Xcode Command Line Tools 和 Python 3.9+。
+2. 如果 ~/ChengyinCompanion 不存在，就克隆到这里；如果目录已存在且有未提交修改，不要覆盖，改用新的临时克隆。
+3. 先运行 ./scripts/bootstrap-local.sh --check-only。
+4. 只有预检通过后才运行 ./scripts/bootstrap-local.sh，安装并启动应用。
+5. 不使用 sudo，不绕过 macOS 安全机制，不读取或上传密钥，不调用 Seedance/TTS，不修改 ~/.codex/config.toml。
+6. 最后告诉我安装版本、应用位置、是否成功启动，以及仍然待完成的公开发行边界。
+```
+
+手动安装只需：
+
+```bash
+git clone https://github.com/daishengyong/chengyin-companion.git ~/ChengyinCompanion
+cd ~/ChengyinCompanion
+./scripts/bootstrap-local.sh --check-only
+./scripts/bootstrap-local.sh
+```
+
+源码安装会创建本机 ad-hoc 开发构建，因此不是已公证的公开 DMG。它不会自动改写 Codex 全局通知配置；先用 `Command + Shift + R` 预览任务完成庆祝，其他互动可直接使用。完整步骤、恢复和常见问题见[新用户快速上手](docs/QUICKSTART.zh-Hans.md)。
+
+## 第一次怎么玩
+
+| 操作 | 反馈 |
+| --- | --- |
+| 单击角色 | 当前时段的短回应 |
+| 双击角色 | 打开生活或幻想场景 |
+| 长按后松开 | 抚摸反馈和随机亲密动作 |
+| 拖拽或快速甩动 | 抱起、惯性、声音与屏幕边缘吸附 |
+| `Command + Shift + M` | 在头像、半身和全屏之间切换 |
+| `Command + Shift + G` | 开始“20 秒抓住我” |
+| 点击魔术棒 | 一次看到动作、场景和小游戏入口 |
+
+公开代码版使用动态系统图形代替尚未公开的人物视频；安装你自己的合法 Content Pack 后，同一套交互会自动使用对应视频、音轨、构图和失败回退。
+
+## 开发者快速入口
+
+不安装到 `/Applications`，只启动当前克隆的预览：
 
 ```bash
 ./scripts/preview-local.sh
 ```
 
-只检查预览前置条件和进程冲突，不构建、不停止也不启动：
-
-```bash
-./scripts/preview-local.sh --check-only --json
-```
-
-确实需要事务式安装到 `/Applications` 并核对已安装进程时，再使用：
-
-```bash
-./scripts/bootstrap-local.sh
-```
-
-只检查环境、不构建也不安装：
-
-```bash
-./scripts/bootstrap-local.sh --check-only
-```
-
-在明确禁止安装与 GUI 授权的自动化环境中，只验证源码前置条件并把所有者门标为待验证：
-
-```bash
-./scripts/run-first-use-low-impact-audit.sh --zero-authorization
-```
-
-最快的贡献预检使用无需联网、不会泄露路径的统一入口：
+最快的离线贡献预检：
 
 ```bash
 ./scripts/check-contribution.py --profile quick --json
 python3 scripts/audit-public-source-secrets.py --json
 ```
 
-验证从当前克隆生成的源码包确实包含构建、贡献与恢复所需文件，并能在隔离副本中运行：
-
-```bash
-./scripts/run-portable-source-smoke.sh
-```
-
-整个流程不调用 Seedance/TTS、不读取 API Key、不修改 Codex 配置、不申请麦克风、
-不创建账户，也不上传诊断。源码安装是 ad-hoc 本地签名开发构建，不冒充已公证 Release。
-早于 3.9 的 Python 即使名为 `python3` 也不兼容；预检会在构建前返回稳定错误码和安装／选择新版解释器的恢复动作，不会误报通过后才在创作者工具中失败。当前开发机的 macOS Python 3.9.6 已通过关键工具实跑，不要求用户为了满足一个虚高门槛额外安装 3.10。
+整个源码流程不调用 Seedance/TTS、不读取 API Key、不申请麦克风、不创建账户，也不上传诊断。Python 兼容性、零授权审计和隔离源码包验证见[新用户快速上手](docs/QUICKSTART.zh-Hans.md)。
 
 ## 项目蓝图
 
+- [普通用户安装、试玩与恢复](docs/QUICKSTART.zh-Hans.md)
 - [本地优先、无收费/账户/广告/自动分享边界](docs/PRODUCT-BOUNDARY.zh-Hans.md)
 - [Codex 伴侣产品与工程架构](docs/CODEX-PRODUCT-ARCHITECTURE.md)
 - [全球原创角色与 Seedance 内容系统](docs/GLOBAL-PERSONA-SYSTEM.md)
@@ -88,6 +116,11 @@ python3 scripts/audit-public-source-secrets.py --json
 - [项目治理](GOVERNANCE.zh-Hans.md)
 - [社区行为规范](CODE_OF_CONDUCT.zh-Hans.md)
 - [支持与问题报告](SUPPORT.zh-Hans.md)
+
+## 完整产品能力
+
+以下是源码中已经实现并持续验证的完整能力。公开代码版缺少权利待审的内置人物媒体，
+因此默认使用动态系统图形；导入合法 Content Pack 后由同一套运行时驱动视频和声音。
 
 - 原生 AppKit 浮动面板承载 SwiftUI 内容
 - 不录音、不听写、不建立聊天线程，也不申请麦克风权限

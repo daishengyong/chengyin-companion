@@ -54,9 +54,10 @@ PAIRS = (
     ),
     ("docs/LOCAL-PREVIEW.zh-Hans.md", "docs/LOCAL-PREVIEW.md"),
     ("docs/PRODUCT-BOUNDARY.zh-Hans.md", "docs/PRODUCT-BOUNDARY.md"),
+    ("docs/QUICKSTART.zh-Hans.md", "docs/QUICKSTART.md"),
 )
 LINK_PATTERN = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
-FENCE_PATTERN = re.compile(r"```(?:bash|text)?\n(.*?)```", re.DOTALL)
+FENCE_LINE_PATTERN = re.compile(r"^\s*(`{3,})([A-Za-z0-9_-]*)\s*$")
 HEADING_PATTERN = re.compile(r"^(#{1,6})\s+", re.MULTILINE)
 HAN_PATTERN = re.compile(r"[\u3400-\u9fff]")
 VOLATILE_CORE_LINE_PATTERNS = (
@@ -89,6 +90,8 @@ LANGUAGE_COUNTERPARTS = {
     "LOCAL-PREVIEW.md": "LOCAL-PREVIEW.zh-Hans.md",
     "docs/PRODUCT-BOUNDARY.md": "docs/PRODUCT-BOUNDARY.zh-Hans.md",
     "PRODUCT-BOUNDARY.md": "PRODUCT-BOUNDARY.zh-Hans.md",
+    "docs/QUICKSTART.md": "docs/QUICKSTART.zh-Hans.md",
+    "QUICKSTART.md": "QUICKSTART.zh-Hans.md",
 }
 
 
@@ -125,12 +128,26 @@ def missing_targets(targets: set[str], document_name: str) -> list[str]:
 
 
 def executable_lines(text: str) -> set[str]:
-    return {
-        line.strip()
-        for block in FENCE_PATTERN.findall(text)
-        for line in block.splitlines()
-        if line.strip() and not line.lstrip().startswith("#")
-    }
+    result: set[str] = set()
+    fence_length = 0
+    capture = False
+    for raw_line in text.splitlines():
+        match = FENCE_LINE_PATTERN.fullmatch(raw_line)
+        if fence_length == 0:
+            if not match:
+                continue
+            fence_length = len(match.group(1))
+            capture = match.group(2) in {"", "bash", "text"}
+            continue
+        if match and len(match.group(1)) >= fence_length:
+            fence_length = 0
+            capture = False
+            continue
+        if capture:
+            line = raw_line.strip()
+            if line and not line.startswith("#"):
+                result.add(line)
+    return result
 
 
 def heading_shape(text: str) -> list[int]:
